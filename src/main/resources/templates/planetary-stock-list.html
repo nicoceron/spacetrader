@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Planetary Stocks List</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Planetary Stocks List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Planet</th>
+        <th>Product</th>
+        <th>Stock</th>
+        <th>Details</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="planetaryStock : ${planetaryStocks}">
+        <td th:text="${planetaryStock.planet.name}"></td>
+        <td th:text="${planetaryStock.product.name}"></td>
+        <td th:text="${planetaryStock.stock}"></td>
+        <td><a th:href="@{/planetary-stock/detail/{id}(id=${planetaryStock.id})}">View Details</a></td>
+        <td><a th:href="@{/planetary-stock/edit-form/{id}(id=${planetaryStock.id})}">Edit</a></td>
+        <td><a th:href="@{/planetary-stock/delete/{id}(id=${planetaryStock.id})}" onclick="return confirm('Are you sure?')">Delete</a></td>
+    </tr>
+    </tbody>
+</table>
+<a href="/planetary-stock/edit-form/0">Add New Planetary Stock</a>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Planetary Stock Detail</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Planetary Stock Detail</h1>
+<p><strong>Planet:</strong> <span th:text="${planetaryStock.planet.name}"></span></p>
+<p><strong>Product:</strong> <span th:text="${planetaryStock.product.name}"></span></p>
+<p><strong>Stock:</strong> <span th:text="${planetaryStock.stock}"></span></p>
+<p><strong>Demand Factor:</strong> <span th:text="${planetaryStock.demandFactor}"></span></p>
+<p><strong>Supply Factor:</strong> <span th:text="${planetaryStock.supplyFactor}"></span></p>
+<a th:href="@{/planetary-stock/list}">Back to List</a>
+</body>
+</html>

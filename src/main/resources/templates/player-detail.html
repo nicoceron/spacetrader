@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Player Detail</title>
+</head>
+<body>
+<h1>Player Detail</h1>
+<div>
+    <p><strong>ID:</strong> <span th:text="${player.id}"></span></p>
+    <p><strong>Name:</strong> <span th:text="${player.name}"></span></p>
+    <p><strong>Role:</strong> <span th:text="${player.role}"></span></p>
+    <p><strong>Spaceships:</strong></p>
+    <ul>
+        <li th:each="spaceship : ${player.spaceships}" th:text="${spaceship.name}"></li>
+    </ul>
+</div>
+<a th:href="@{/player/list}">Back to List</a>
+</body>
+</html>

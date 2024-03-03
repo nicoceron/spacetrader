@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Stock to Planet</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Add Stock to <span th:text="${planet.name}"></span></h1>
+<form th:action="@{/planet/add-stock/{planetId}(planetId=${planet.id})}" method="post">
+    <div>
+        <label for="stockName">Stock Name</label>
+        <input type="text" id="stockName" name="name" required>
+    </div>
+    <div>
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" name="quantity" required>
+    </div>
+    <button type="submit">Add Stock</button>
+</form>
+<a th:href="@{/planet/detail/{id}(id=${planet.id})}">Back to Planet Detail</a>
+</body>
+</html>

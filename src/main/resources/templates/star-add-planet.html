@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Planet to Star</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Add Planet to <span th:text="${star.name}"></span></h1>
+<form th:action="@{/stars/add-planet/{starId}(starId=${star.id})}" method="post">
+    <div>
+        <label for="planetName">Planet Name</label>
+        <input type="text" id="planetName" name="name" required>
+    </div>
+    <button type="submit">Add Planet</button>
+</form>
+<a th:href="@{/stars/detail/{id}(id=${star.id})}">Back to Star Detail</a>
+</body>
+</html>

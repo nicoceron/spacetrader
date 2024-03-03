@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Players List</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Players List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Details</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="player : ${players}">
+        <td th:text="${player.name}"></td>
+        <td><a th:href="@{/player/detail/{id}(id=${player.id})}">View Details</a></td>
+        <td><a th:href="@{/player/edit-form/{id}(id=${player.id})}">Edit</a></td>
+        <td><a th:href="@{/player/delete/{id}(id=${player.id})}" onclick="return confirm('Are you sure?')">Delete</a></td>
+    </tr>
+    </tbody>
+</table>
+<a href="/player/edit-form/0">Add New Player</a>
+</body>
+</html>

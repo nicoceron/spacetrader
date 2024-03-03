@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Spaceship</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1 th:text="${spaceship.id} ? 'Edit Spaceship' : 'Add New Spaceship'"></h1>
+<form th:action="@{/spaceship/save}" th:object="${spaceship}" method="post">
+    <input type="hidden" th:field="*{id}">
+    <div>
+        <label for="name">Name</label>
+        <input type="text" th:field="*{name}" id="name" required>
+    </div>
+    <div>
+        <label for="storage">Storage</label>
+        <input type="number" step="0.01" th:field="*{storage}" id="storage" required>
+    </div>
+    <div>
+        <label for="velocity">Velocity</label>
+        <input type="number" step="0.01" th:field="*{velocity}" id="velocity" required>
+    </div>
+    <div>
+        <label for="cargo">Cargo</label>
+        <select multiple="multiple" th:field="*{cargo}" id="cargo">
+            <option th:each="cargoItem : ${allCargoItems}" th:value="${cargoItem.id}" th:text="${cargoItem.name}"></option>
+        </select>
+    </div>
+    <div>
+        <label for="crew">Crew</label>
+        <select multiple="multiple" th:field="*{crew}" id="crew">
+            <option th:each="player : ${allPlayers}" th:value="${player.id}" th:text="${player.name}"></option>
+        </select>
+    </div>
+    <button type="submit">Save</button>
+</form>
+<a th:href="@{/spaceship/list}">Cancel</a>
+</body>
+</html>

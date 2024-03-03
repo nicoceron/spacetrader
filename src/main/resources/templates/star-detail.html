@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Star Detail</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Star Detail</h1>
+<p><strong>Name:</strong> <span th:text="${star.name}"></span></p>
+<p><strong>Coordinates:</strong> X=<span th:text="${star.x}"></span>, Y=<span th:text="${star.y}"></span>, Z=<span th:text="${star.z}"></span></p>
+<p><strong>Inhabited:</strong> <span th:text="${star.inhabited} ? 'Yes' : 'No'"></span></p>
+<h2>Planets</h2>
+<ul>
+    <li th:each="planet : ${star.planets}" th:text="${planet.name}"></li>
+</ul>
+<a th:href="@{/stars/list}">Back to List</a>
+</body>
+</html>

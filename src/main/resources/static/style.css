@@ -1,0 +1,41 @@
+.formcontainer {
+    border-style: solid;
+    border-color: blue;
+    padding: 20px;
+    margin: 20px;
+}
+
+.entity-licst {
+    border-spacing: 0;
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: black;
+}
+
+.entity-list td,
+.entity-list th {
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    padding: 5px
+}
+
+.error {
+    color: red;
+}
+
+.alert {
+    color: darkorange;
+    font-weight: bold;
+}
+
+.menu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu li {
+    margin-right: 10px;
+}

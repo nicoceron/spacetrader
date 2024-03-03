@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spaceship Detail</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Spaceship Detail</h1>
+<p><strong>Name:</strong> <span th:text="${spaceship.name}"></span></p>
+<p><strong>Storage:</strong> <span th:text="${spaceship.storage}"></span></p>
+<p><strong>Velocity:</strong> <span th:text="${spaceship.velocity}"></span></p>
+<p><strong>Cargo:</strong></p>
+<ul>
+    <li th:each="cargoItem : ${spaceship.cargo}" th:text="${cargoItem.name}"></li>
+</ul>
+<p><strong>Crew:</strong></p>
+<ul>
+    <li th:each="player : ${spaceship.crew}" th:text="${player.name}"></li>
+</ul>
+<a th:href="@{/spaceship/list}">Back to List</a>
+</body>
+</html>

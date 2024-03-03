@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Planet Detail</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Planet Detail</h1>
+<p><strong>Name:</strong> <span th:text="${planet.name}"></span></p>
+<h2>Available Stocks</h2>
+<ul>
+    <li th:each="stock : ${planet.productsAvailable}" th:text="${stock.name} + ' - ' + ${stock.quantity}"></li>
+</ul>
+<a th:href="@{/planet/list}">Back to List</a>
+</body>
+</html>
