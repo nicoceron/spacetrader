@@ -7,6 +7,8 @@ import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ public class Initializer implements CommandLineRunner {
     private StarService starService;
 
     @Autowired
-    private StarRepository starRepository;
+    private ModelService modelService;
 
     @Autowired
     private PlanetService planetService;
@@ -32,21 +34,38 @@ public class Initializer implements CommandLineRunner {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    StarRepository starRepository;
+
     private Random random = new Random();
 
     @Override
     public void run(String... args) throws Exception {
-        generateStarsAndPlanets();
+        generateStarsAndPlanets(40000);
+        createSpaceshipModels();
         List<Spaceship> spaceships = createAndSaveSpaceships(10);
         distributePlayersAmongSpaceships(100, spaceships);
         createProductSpecifications(500);
-        createSpaceshipModels(20);
     }
 
-    private void generateStarsAndPlanets() {
+    private void createSpaceshipModels() {
+        List<Model> models = new ArrayList<>();
+        models.add(new Model("Overlord", 1.5, 3000.0));
+        models.add(new Model("Mule", 2.0, 5000.0));
+        models.add(new Model("Foundation", 2.2, 4500.0));
+        models.add(new Model("Hail Mary", 3.0, 6000.0));
+        models.add(new Model("Mothership", 2.8, 5500.0));
+        models.add(new Model("Phoenix", 1.5, 500.0));
+        models.add(new Model("Viking", 1.8, 200.0));
+        models.add(new Model("Battlecruiser", 0.6, 10000.0));
+        // Initialize the models in the database
+        models.forEach(modelService::saveOrUpdateModel);
+    }
+
+    private void generateStarsAndPlanets(int count) {
         Random random = new Random();
         List<Star> stars = new ArrayList<>();
-        for (int i = 0; i < 40000; i++) {
+        for (int i = 0; i < count; i++) {
             Star star = new Star("Star_" + i, random.nextDouble() * 1000, random.nextDouble() * 1000, random.nextDouble() * 1000, false);
             if (random.nextDouble() <= 0.01) { // ~1% chance to have planets
                 int planetsCount = random.nextInt(3) + 1; // 1 to 3 planets
@@ -61,29 +80,40 @@ public class Initializer implements CommandLineRunner {
         starRepository.saveAll(stars);
     }
 
-    private List<Spaceship> createAndSaveSpaceships(int count) {
+    public List<Spaceship> createAndSaveSpaceships(int count) {
+        // Fetch all models from the database
+        List<Model> allModels = modelService.findAllModels();
+        if (allModels.isEmpty()) {
+            throw new IllegalStateException("No models available to assign to spaceships.");
+        }
+
         List<Spaceship> spaceships = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             Spaceship spaceship = new Spaceship();
-            // Set the name to a unique value; adjust as necessary
             spaceship.setName("Spaceship " + (i + 1));
-            // Ensure other required fields are set as well
-
+            spaceship.setCredit(BigDecimal.valueOf(Math.random() * 10000));
+            // Assign a random model from the list
+            int randomModelIndex = (int) (Math.random() * allModels.size());
+            Model randomModel = allModels.get(randomModelIndex);
+            spaceship.setModel(randomModel);
             try {
                 spaceship = spaceshipService.saveOrUpdateSpaceship(spaceship);
                 spaceships.add(spaceship);
             } catch (ConstraintViolationException e) {
-                // This is just a placeholder for exception handling
                 System.err.println("Failed to save spaceship due to constraint violations: " + e.getMessage());
             }
         }
         return spaceships;
     }
 
-
-    private void distributePlayersAmongSpaceships(int playersCount, List<Spaceship> spaceships) {
+    public void distributePlayersAmongSpaceships(int playersCount, List<Spaceship> spaceships) {
+        String[] roles = {"Pilot", "Trader", "Captain"};
         for (int i = 0; i < playersCount; i++) {
             Player player = new Player();
+            player.setUser("Player" + i + 1);
+            player.setPassword("123");
+            int randomRoleIndex = (int) (Math.random() * roles.length);
+            player.setRole(roles[randomRoleIndex]);
             player = playerService.saveOrUpdatePlayer(player);
             Spaceship assignedSpaceship = spaceships.get(i % spaceships.size());
             spaceshipService.assignPlayerToSpaceship(player.getId(), assignedSpaceship.getId());
@@ -93,16 +123,13 @@ public class Initializer implements CommandLineRunner {
     private void createProductSpecifications(int count) {
         for (int i = 0; i < count; i++) {
             Product product = new Product();
+            product.setName("Product" + i + 1);
+            product.setVolume(random.nextDouble());
             productService.saveOrUpdateProduct(product);
         }
     }
 
-    private void createSpaceshipModels(int count) {
-        for (int i = 0; i < count; i++) {
-            Spaceship spaceship = new Spaceship();
-            spaceshipService.saveOrUpdateSpaceship(spaceship);
-        }
-    }
+
 }
 
 

@@ -10,9 +10,9 @@ public class Model {
     private long id;
     @NotBlank(message = "Model name is required")
     private String modelName;
-    @Column(name = "velocity")
+    @Column(name = "velocity", nullable = false)
     private double velocity;
-    @Column(name = "storage")
+    @Column(name = "storage", nullable = false)
     private double storage;
 
 
