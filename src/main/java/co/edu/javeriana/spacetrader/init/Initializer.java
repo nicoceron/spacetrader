@@ -40,7 +40,7 @@ public class Initializer implements CommandLineRunner {
         List<Spaceship> spaceships = createAndSaveSpaceships(10);
         distributePlayersAmongSpaceships(100, spaceships);
         createProductSpecifications(500);
-        createSpaceshipTypes(20);
+        createSpaceshipModels(20);
     }
 
     private void generateStarsAndPlanets() {
@@ -97,7 +97,7 @@ public class Initializer implements CommandLineRunner {
         }
     }
 
-    private void createSpaceshipTypes(int count) {
+    private void createSpaceshipModels(int count) {
         for (int i = 0; i < count; i++) {
             Spaceship spaceship = new Spaceship();
             spaceshipService.saveOrUpdateSpaceship(spaceship);
