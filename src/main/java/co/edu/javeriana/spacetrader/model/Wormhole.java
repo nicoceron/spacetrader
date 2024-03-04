@@ -22,4 +22,7 @@ public class Wormhole {
         this.destinationStar = destinationStar;
     }
 
+    public Wormhole() {
+
+    }
 }

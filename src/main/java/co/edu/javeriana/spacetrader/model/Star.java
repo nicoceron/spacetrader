@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 public class Star {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -48,28 +48,28 @@ public class Star {
         this.name = name;
     }
 
-    public double getxCoordinate() {
+    public double getX() {
         return x;
     }
 
-    public void setxCoordinate(double xCoordinate) {
-        this.x = xCoordinate;
+    public void setX(double x) {
+        this.x = x;
     }
 
-    public double getyCoordinate() {
+    public double getY() {
         return y;
     }
 
-    public void setyCoordinate(double yCoordinate) {
-        this.y = yCoordinate;
+    public void setY(double y) {
+        this.y = y;
     }
 
-    public double getzCoordinate() {
+    public double getZ() {
         return z;
     }
 
-    public void setzCoordinate(double zCoordinate) {
-        this.z = zCoordinate;
+    public void setZ(double z) {
+        this.z = z;
     }
 
     public boolean isInhabited() {

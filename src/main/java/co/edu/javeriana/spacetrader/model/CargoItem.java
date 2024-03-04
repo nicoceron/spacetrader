@@ -22,6 +22,11 @@ public class CargoItem {
         this.product = product;
         this.quantity = quantity;
     }
+
+    public CargoItem() {
+
+    }
+
     public long getId() {
         return id;
     }
