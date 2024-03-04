@@ -24,10 +24,10 @@
         <td><a th:href="@{/spaceship/detail/{id}(id=${spaceship.id})}">View Details</a></td>
         <td><a th:href="@{/spaceship/edit-form/{id}(id=${spaceship.id})}">Edit</a></td>
         <td><a th:href="@{/spaceship/delete/{id}(id=${spaceship.id})}" onclick="return confirm('Are you sure?')">Delete</a></td>
-        <td><a th:href="@{/spaceship/assign-player-form/{spaceshipId}(spaceshipId=${spaceship.id})}">Assign Player</a></td>
+        <td><a th:href="@{/spaceship/assign-player/{spaceshipId}(spaceshipId=${spaceship.id})}">Assign Player</a></td>
     </tr>
     </tbody>
 </table>
-<a href="/spaceship/edit-form/0">Add New Spaceship</a>
+<a th:href="@{/spaceship/edit-form/0}">Add New Spaceship</a>
 </body>
 </html>

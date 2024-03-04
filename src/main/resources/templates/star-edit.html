@@ -7,7 +7,7 @@
 <body>
 <div class="formcontainer">
     <h1>Edit Star</h1>
-    <form th:action="@{/stars/save}" th:object="${star}" method="post">
+    <form th:action="@{/star/save}" th:object="${star}" method="post">
         <input type="hidden" th:field="*{id}" id="id">
         <label for="starName">Name: </label>
         <input type="text" th:field="*{name}" id="starName">
@@ -35,6 +35,6 @@
         <button type="submit">Save Changes</button>
     </form>
 </div>
-<a th:href="@{/stars/list}">Cancel</a>
+<a th:href="@{/star/list}">Cancel</a>
 </body>
 </html>

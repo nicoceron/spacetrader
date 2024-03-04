@@ -51,7 +51,6 @@ public class PlanetService {
 
         // Save the planet
         planetRepository.save(planet);
-
         planetaryStockService.saveOrUpdatePlanetaryStock(planetaryStock);
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
 //import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/stars")
+@RequestMapping("/star")
 public class StarController {
 
     @Autowired
@@ -49,13 +49,13 @@ public class StarController {
     @PostMapping("/save")
     public String saveOrUpdateStar(@ModelAttribute Star star) {
         starService.saveOrUpdateStar(star);
-        return "redirect:/stars/list";
+        return "redirect:/star/list";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteStar(@PathVariable Long id) {
         starService.deleteStar(id);
-        return "redirect:/stars/list";
+        return "redirect:/star/list";
     }
 
     // Add a planet to a star
@@ -73,7 +73,7 @@ public class StarController {
             @PathVariable Long starId,
             @ModelAttribute("planet") Planet planet) {
         starService.addPlanetToStar(starId, planet);
-        return "redirect:/stars/detail/" + starId;
+        return "redirect:/star/detail/" + starId;
 
 
     }

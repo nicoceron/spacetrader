@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Add Planet to <span th:text="${star.name}"></span></h1>
-<form th:action="@{/stars/add-planet/{starId}(starId=${star.id})}" th:object="${planet}" method="post">
+<form th:action="@{/star/add-planet/{starId}(starId=${star.id})}" th:object="${planet}" method="post">
     <div>
         <label for="planetName">Planet Name</label>
         <input type="text" th:field="*{name}" id="planetName" required>
@@ -14,6 +14,6 @@
     <button type="submit">Add Planet</button>
 </form>
 
-<a th:href="@{/stars/detail/{id}(id=${star.id})}">Back to Star Detail</a>
+<a th:href="@{/star/detail/{id}(id=${star.id})}">Back to Star Detail</a>
 </body>
 </html>
