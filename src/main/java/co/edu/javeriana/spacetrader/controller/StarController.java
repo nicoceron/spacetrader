@@ -49,13 +49,13 @@ public class StarController {
     @PostMapping("/save")
     public String saveOrUpdateStar(@ModelAttribute Star star) {
         starService.saveOrUpdateStar(star);
-        return "redirect:/star/list";
+        return "redirect:/stars/list";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteStar(@PathVariable Long id) {
         starService.deleteStar(id);
-        return "redirect:/star/list";
+        return "redirect:/stars/list";
     }
 
     // Add a planet to a star
@@ -63,15 +63,19 @@ public class StarController {
     public String addPlanetForm(@PathVariable Long starId, Model model) {
         Star star = starService.findStarById(starId);
         model.addAttribute("star", star);
+        model.addAttribute("planet", new Planet()); // Add this line
         return "star-add-planet";
     }
+
 
     @PostMapping("/add-planet/{starId}")
     public String addPlanetToStar(
             @PathVariable Long starId,
             @ModelAttribute("planet") Planet planet) {
         starService.addPlanetToStar(starId, planet);
-        return "redirect:/star/detail/" + starId;
+        return "redirect:/stars/detail/" + starId;
+
+
     }
 
 }

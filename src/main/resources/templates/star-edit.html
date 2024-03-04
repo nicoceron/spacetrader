@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Star</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="formcontainer">
+    <h1>Edit Star</h1>
+    <form th:action="@{/stars/save}" th:object="${star}" method="post">
+        <input type="hidden" th:field="*{id}" id="id">
+        <label for="starName">Name: </label>
+        <input type="text" th:field="*{name}" id="starName">
+        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:class="${#fields.hasErrors('name')} ? 'error' : ''"></span>
+
+        <label for="starX">Coordinate X: </label>
+        <input type="text" th:field="*{x}" id="starX">
+        <span th:if="${#fields.hasErrors('x')}" th:errors="*{x}" th:class="${#fields.hasErrors('x')} ? 'error' : ''"></span>
+
+        <label for="starY">Coordinate Y: </label>
+        <input type="text" th:field="*{y}" id="starY">
+        <span th:if="${#fields.hasErrors('y')}" th:errors="*{y}" th:class="${#fields.hasErrors('y')} ? 'error' : ''"></span>
+
+        <label for="starZ">Coordinate Z: </label>
+        <input type="text" th:field="*{z}" id="starZ">
+        <span th:if="${#fields.hasErrors('z')}" th:errors="*{z}" th:class="${#fields.hasErrors('z')} ? 'error' : ''"></span>
+
+        <label for="inhabited">Inhabited: </label>
+        <select th:field="*{inhabited}" id="inhabited">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+        <span th:if="${#fields.hasErrors('inhabited')}" th:errors="*{inhabited}" th:class="${#fields.hasErrors('inhabited')} ? 'error' : ''"></span>
+
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+<a th:href="@{/stars/list}">Cancel</a>
+</body>
+</html>

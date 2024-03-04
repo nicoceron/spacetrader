@@ -2,23 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Star Detail</title>
-    <!-- Ensure the stylesheet link is consistent with the provided example -->
-    <link rel="stylesheet" href="/estilo.css"> <!-- Adjusted to match example -->
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <h1>Star Detail</h1>
-<!-- Apply pipe symbol formatting for consistency -->
+
 <p th:text="|Name: ${star.name}|"></p>
-<!-- Improved coordinates presentation for consistency -->
+
 <p th:text="|Coordinates: X=${star.x}, Y=${star.y}, Z=${star.z}|"></p>
-<!-- Use conditional expression within the pipe for clarity -->
+
 <p th:text="|Inhabited: ${(star.inhabited) ? 'Yes' : 'No'}|"></p>
+
 <h2>Planets</h2>
 <ul>
-    <!-- Maintain original planets listing -->
     <li th:each="planet : ${star.planets}" th:text="${planet.name}"></li>
 </ul>
-<!-- Ensure consistency in the back link -->
+
 <a th:href="@{/stars/list}">Back to List</a>
 </body>
 </html>

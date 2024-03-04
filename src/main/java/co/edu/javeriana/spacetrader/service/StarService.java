@@ -46,9 +46,16 @@ public class StarService {
 
         // Associate planet with star
         planet.setStar(star);
+        star.addPlanet(planet);
 
-        // Save the planet
+        // Set inhabited status to true if the star has at least one planet
+        if (!star.isInhabited() && !star.getPlanets().isEmpty()) {
+            star.setInhabited(true);
+        }
+
+        // Save all
         planetService.saveOrUpdatePlanet(planet);
+        starRepository.save(star);
     }
 
 

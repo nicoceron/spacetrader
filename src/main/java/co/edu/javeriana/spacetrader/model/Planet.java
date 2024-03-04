@@ -38,6 +38,14 @@ public class Planet {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Star getStar() {
         return star;
     }
