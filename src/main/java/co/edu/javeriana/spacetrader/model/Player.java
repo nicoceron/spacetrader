@@ -68,12 +68,17 @@ public class Player {
     public void setRole(String role) {
         this.role = role;
     }
-    public boolean AddSpaceship(Spaceship spaceship){
-        return this.spaceships.add(spaceship);
-    }
 
     public List<Spaceship> getSpaceships() {
         return spaceships;
+    }
+
+    public void setSpaceships(List<Spaceship> spaceships) {
+        this.spaceships = spaceships;
+    }
+
+    public boolean AddSpaceship(Spaceship spaceship){
+        return this.spaceships.add(spaceship);
     }
 
     public boolean canPilot(){

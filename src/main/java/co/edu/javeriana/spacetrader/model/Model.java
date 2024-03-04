@@ -9,7 +9,7 @@ public class Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NotBlank(message = "Model name is required")
-    private String modelName;
+    private String name;
     @Column(name = "velocity", nullable = false)
     private double velocity;
     @Column(name = "storage", nullable = false)
@@ -20,7 +20,7 @@ public class Model {
     }
 
     public Model(String modelName, double velocity, double storage) {
-        this.modelName = modelName;
+        this.name = modelName;
         this.velocity = velocity;
         this.storage = storage;
     }
@@ -33,12 +33,12 @@ public class Model {
         this.id = id;
     }
 
-    public String getModelName() {
-        return modelName;
+    public String getName() {
+        return name;
     }
 
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getVelocity() {

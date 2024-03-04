@@ -18,7 +18,7 @@ public class SpaceshipController {
     private SpaceshipService spaceshipService;
 
     @Autowired
-    private PlayerService playerService; // Assuming PlayerService for handling player-related operations
+    private PlayerService playerService;
 
     @GetMapping("/list")
     public String listSpaceships(Model model) {
@@ -60,7 +60,7 @@ public class SpaceshipController {
             return "redirect:/spaceship/detail/" + spaceshipId;
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
-            return "error-page"; // Assuming an error page template exists
+            return "error-page";
         }
     }
 

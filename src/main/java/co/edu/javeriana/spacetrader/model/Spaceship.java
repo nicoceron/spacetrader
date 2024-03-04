@@ -57,22 +57,12 @@ public class Spaceship {
         this.name = name;
     }
 
-
     public Model getModel() {
         return model;
     }
 
     public void setModel(Model model) {
         this.model = model;
-    }
-
-//    Model variables
-    public double getStorage(){
-        return model.getStorage();
-    }
-
-    public double getVelocity(){
-        return model.getVelocity();
     }
 
     public BigDecimal getCredit() {
@@ -98,7 +88,6 @@ public class Spaceship {
     public void setCargo(List<CargoItem> cargo) {
         this.cargo = cargo;
     }
-
 
     public void addCrewMember(Player player) {
         crew.add(player);

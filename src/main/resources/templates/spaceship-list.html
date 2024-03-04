@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Spaceships List</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <h1>Spaceships List</h1>
@@ -20,7 +20,7 @@
     <tbody>
     <tr th:each="spaceship : ${spaceships}">
         <td th:text="${spaceship.name}"></td>
-        <td th:text="${spaceship.model}"></td>
+        <td th:text="${spaceship.model.name}"></td>
         <td><a th:href="@{/spaceship/detail/{id}(id=${spaceship.id})}">View Details</a></td>
         <td><a th:href="@{/spaceship/edit-form/{id}(id=${spaceship.id})}">Edit</a></td>
         <td><a th:href="@{/spaceship/delete/{id}(id=${spaceship.id})}" onclick="return confirm('Are you sure?')">Delete</a></td>

@@ -2,20 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Spaceship Detail</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <h1>Spaceship Detail</h1>
 <p><strong>Name:</strong> <span th:text="${spaceship.name}"></span></p>
-<p><strong>Storage:</strong> <span th:text="${spaceship.storage}"></span></p>
-<p><strong>Velocity:</strong> <span th:text="${spaceship.velocity}"></span></p>
+<p><strong>Model:</strong> <span th:text="${spaceship.model.name}"></span></p>
+<p><strong>Credit:</strong> <span th:text="${spaceship.credit}"></span></p>
 <p><strong>Cargo:</strong></p>
 <ul>
-    <li th:each="cargoItem : ${spaceship.cargo}" th:text="${cargoItem.name}"></li>
+    <li th:each="cargoItem : ${spaceship.cargo}" th:text="${cargoItem.product.name} + ' x ' + ${cargoItem.quantity}"></li>
 </ul>
 <p><strong>Crew:</strong></p>
 <ul>
-    <li th:each="player : ${spaceship.crew}" th:text="${player.name}"></li>
+    <li th:each="player : ${spaceship.crew}" th:text="${player.user} + ' - ' + ${player.role}"></li>
 </ul>
 <a th:href="@{/spaceship/list}">Back to List</a>
 </body>
