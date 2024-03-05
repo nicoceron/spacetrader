@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Navigation</title>
+</head>
+<body>
+<nav th:fragment="mainMenu">
+    <ul class="menu">
+        <li><a th:href="@{/player-list}">Players List</a></li>
+        <li><a th:href="@{/spaceship-list}">Spaceships List</a></li>
+        <li><a th:href="@{/model-list}">Models List</a></li>
+        <li><a th:href="@{/star-list}">Stars List</a></li>
+        <li><a th:href="@{/planet-list}">Planets List</a></li>
+        <li><a th:href="@{/product-list}">Products List</a></li>
+        <li><a th:href="@{/planetary-stock-list}">Planetary Stocks List</a></li>
+    </ul>
+</nav>
+
+</body>
+
+</html>

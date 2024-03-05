@@ -15,7 +15,7 @@ public class Star {
     private double x;
     private double y;
     private double z;
-    private boolean inhabited;
+    private boolean inhabited = false;
 
     @OneToMany(mappedBy = "star", cascade = CascadeType.PERSIST)
     private List<Planet> planets = new ArrayList<>();
@@ -92,6 +92,7 @@ public class Star {
     public void addPlanet(Planet planet) {
         planets.add(planet);
         planet.setStar(this);
+        this.inhabited = true;
     }
 
     // Method to remove a planet from the star

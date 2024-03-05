@@ -73,7 +73,6 @@ public class Initializer implements CommandLineRunner {
                 for (int j = 0; j < planetsCount; j++) {
                     Planet planet = new Planet("Planet_" + i + "_" + j, star);
                     star.addPlanet(planet);
-                    star.setInhabited(true);
                 }
             }
             stars.add(star);
