@@ -1,4 +1,4 @@
-# 🚀 Space Trader: Multiplayer Strategy and Trade Game 
+# 🚀 Space Trader
 
 Welcome to the GitHub repository for **Space Trader**, a multiplayer strategy and trade game set in the futuristic year 31337. Humanity has colonized numerous star systems, and it's up to players to form teams, pilot their trading ships through these vast expanses, and aim for interstellar riches. 🌟 Your mission? Earn the highest amount of credits within a set time frame by smartly trading goods across a variety of planets.
 
