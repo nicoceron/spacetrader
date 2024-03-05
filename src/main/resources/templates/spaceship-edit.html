@@ -14,8 +14,12 @@
     </div>
     <div>
         <label for="model">Model</label>
-        <input type="text" th:field="*{model.name}" id="model" required readonly>
+        <select id="model" th:field="*{model.id}">
+            <option value="" th:unless="${models}" th:text="Select Model">Select Model</option>
+            <option th:each="model : ${models}" th:value="${model.id}" th:text="${model.name}">Model Name</option>
+        </select>
     </div>
+
     <div>
         <label for="credit">Credit</label>
         <input type="number" step="0.01" th:field="*{credit}" id="credit" required>

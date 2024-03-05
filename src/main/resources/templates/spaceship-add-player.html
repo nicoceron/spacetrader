@@ -1,10 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Assign Player to Spaceship</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
+<h1>Assign Player to Spaceship</h1>
+<h2 th:text="'Assign player to ' + ${spaceship.name}"></h2>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="player : ${availablePlayers}">
+        <td th:text="${player.user}"></td>
+        <td><a th:href="@{/spaceship/assign-player/{spaceshipId}/to/{playerId}(spaceshipId=${spaceship.id}, playerId=${player.id})}">Assign</a></td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/spaceship/list}">Back to Spaceship List</a>
 </body>
 </html>

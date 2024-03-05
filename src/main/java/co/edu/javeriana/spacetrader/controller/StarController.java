@@ -71,7 +71,7 @@ public class StarController {
     public String addPlanetForm(@PathVariable Long starId, Model model) {
         Star star = starService.findStarById(starId);
         model.addAttribute("star", star);
-        model.addAttribute("planet", new Planet()); // Add this line
+        model.addAttribute("planet", new Planet());
         return "star-add-planet";
     }
 
@@ -82,8 +82,6 @@ public class StarController {
             @ModelAttribute("planet") Planet planet) {
         starService.addPlanetToStar(starId, planet);
         return "redirect:/star/detail/" + starId;
-
-
-    }
+   }
 
 }
