@@ -25,7 +25,7 @@ public class Model {
         this.storage = storage;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

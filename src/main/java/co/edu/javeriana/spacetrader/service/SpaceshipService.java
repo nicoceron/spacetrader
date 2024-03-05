@@ -17,8 +17,8 @@ public class SpaceshipService {
 
     @Autowired
     private SpaceshipRepository spaceshipRepository;
-
-    private final PlayerRepository playerRepository;
+    @Autowired
+    private PlayerRepository playerRepository;
 
     public SpaceshipService(SpaceshipRepository spaceshipRepository, PlayerRepository playerRepository) {
         this.spaceshipRepository = spaceshipRepository;
