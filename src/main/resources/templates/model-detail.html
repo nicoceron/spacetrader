@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Model Detail</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<h1>Model Detail</h1>
+<div>
+    <strong>Name:</strong> <span th:text="${model.name}"></span><br>
+    <strong>Velocity:</strong> <span th:text="${model.velocity}"></span><br>
+    <strong>Storage:</strong> <span th:text="${model.storage}"></span><br>
+</div>
+<a th:href="@{/model/list}">Back to list</a>
+</body>
+</html>

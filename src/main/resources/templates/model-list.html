@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Model List</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<h1>Model List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Velocity</th>
+        <th>Storage</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="model : ${models}">
+        <td th:text="${model.name}"></td>
+        <td th:text="${model.velocity}"></td>
+        <td th:text="${model.storage}"></td>
+        <td>
+            <a th:href="@{/model/detail/{id}(id=${model.id})}">View</a> |
+            <a th:href="@{/model/edit-form/{id}(id=${model.id})}">Edit</a> |
+            <a th:href="@{/model/delete/{id}(id=${model.id})}" onclick="return confirm('Are you sure?')">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a href="/model/edit-form/0">Add New Model</a>
+</body>
+</html>

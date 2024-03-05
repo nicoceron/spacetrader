@@ -13,7 +13,7 @@ import co.edu.javeriana.spacetrader.model.Model;
 import java.util.List;
 
 @Controller
-@RequestMapping("/models")
+@RequestMapping("/model")
 public class ModelController {
 
     @Autowired
@@ -51,13 +51,13 @@ public class ModelController {
     @PostMapping("/save")
     public String saveOrUpdateModel(@ModelAttribute("model") Model model){
         modelService.saveOrUpdateModel(model);
-        return "redirect:/models/list";
+        return "redirect:/model/list";
     }
 
     //Delete Model
     @GetMapping("/delete/{id}")
     public String deleteModel(@PathVariable Long id){
         modelService.deleteModel(id);
-        return "redirect:/models/list";
+        return "redirect:/model/list";
     }
 }

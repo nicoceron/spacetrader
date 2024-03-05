@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Model</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<h1 th:text="${model.id} ? 'Edit Model' : 'Add New Model'"></h1>
+<form th:action="@{/model/save}" th:object="${model}" method="post">
+  <input type="hidden" th:field="*{id}">
+  <div>
+    <label for="name">Name</label>
+    <input type="text" th:field="*{name}" id="name" required>
+  </div>
+  <div>
+    <label for="velocity">Velocity</label>
+    <input type="number" th:field="*{velocity}" id="velocity" required>
+  </div>
+  <div>
+    <label for="storage">Storage</label>
+    <input type="number" th:field="*{storage}" id="storage" required>
+  </div>
+  <button type="submit">Save</button>
+</form>
+<a th:href="@{/model/list}">Cancel</a>
+</body>
+</html>
