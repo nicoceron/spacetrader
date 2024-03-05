@@ -4,6 +4,7 @@ import co.edu.javeriana.spacetrader.model.Planet;
 import co.edu.javeriana.spacetrader.model.PlanetaryStock;
 import co.edu.javeriana.spacetrader.model.Star;
 import co.edu.javeriana.spacetrader.repository.PlanetRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,9 +28,25 @@ public class PlanetService {
         return planetRepository.findById(id).orElseThrow(() -> new RuntimeException("Planet not found for this id :: " + id));
     }
     // Save or update a planet
-    public Planet saveOrUpdatePlanet(Planet planet) {
-        return planetRepository.save(planet);
+    public void saveOrUpdatePlanet(Planet planet) {
+        if (planet.getId() != 0) { // Check if id is not the default value
+            Planet existingPlanet = findPlanetById(planet.getId());
+            if (existingPlanet != null) {
+                existingPlanet.setName(planet.getName());
+                // If there are other fields that need to be copied from planet to existingPlanet, do so here
+                planetRepository.save(existingPlanet);
+            } else {
+                throw new EntityNotFoundException("Planet with id " + planet.getId() + " not found.");
+            }
+        } else {
+            // Handle the creation of a new Planet
+            if (planet.getStar() == null) {
+                throw new IllegalStateException("Star must be set for a new planet");
+            }
+            planetRepository.save(planet);
+        }
     }
+
 
     // Delete a planet by ID
     @Transactional

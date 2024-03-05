@@ -36,16 +36,20 @@ public class PlanetController {
     }
 
     @GetMapping("/edit-form/{id}")
-    public String editPlanetForm(@PathVariable Long id, Model model) {
+    public String editPlanetForm(@PathVariable long id, Model model) {
         Planet planet;
         if (id == 0) {
             planet = new Planet(); // Create a new Planet object
         } else {
             planet = planetService.findPlanetById(id);
+            if (planet == null) {
+                planet = new Planet(); // In case no planet is found
+            }
         }
         model.addAttribute("planet", planet);
         return "planet-edit";
     }
+
 
     @PostMapping("/save")
     public String saveOrUpdatePlanet(@ModelAttribute Planet planet) {

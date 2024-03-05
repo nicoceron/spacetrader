@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Edit Planet</title>
+    <title th:text="${planet.id == 0} ? 'Add New Planet' : 'Edit Planet'"></title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<h1 th:text="${planet.id} ? 'Edit Planet' : 'Add New Planet'"></h1>
+<h1 th:text="${planet.id == 0} ? 'Add New Planet' : 'Edit Planet'"></h1>
 <form th:action="@{/planet/save}" th:object="${planet}" method="post">
     <input type="hidden" th:field="*{id}">
     <div>
         <label for="name">Name</label>
         <input type="text" th:field="*{name}" id="name" required>
+    </div>
+    <div th:if="${planet.id != 0}" style="display:none;">
+        <label for="star">Star</label>
+        <input type="hidden" th:field="*{star.id}" id="star">
     </div>
     <button type="submit">Save</button>
 </form>
