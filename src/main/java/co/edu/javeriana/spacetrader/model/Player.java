@@ -13,9 +13,9 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "name", nullable = false)
     @NotBlank(message = "This field is required, please provide a value.")
-    private String user;
+    private String name;
 
     @Column(name = "password", nullable = false)
     @NotBlank(message = "This field is required, please provide a value.")
@@ -31,8 +31,8 @@ public class Player {
     public Player() {
     }
 
-    public Player(String user, String password, String role) {
-        this.user = user;
+    public Player(String name, String password, String role) {
+        this.name = name;
         this.password = password;
         this.role = role;
     }
@@ -45,12 +45,12 @@ public class Player {
         this.id = id;
     }
 
-    public String getUser() {
-        return user;
+    public String getName() {
+        return name;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {

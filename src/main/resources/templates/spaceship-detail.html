@@ -15,7 +15,7 @@
 </ul>
 <p><strong>Crew:</strong></p>
 <ul>
-    <li th:each="player : ${spaceship.crew}" th:text="${player.user} + ' - ' + ${player.role}"></li>
+    <li th:each="player : ${spaceship.crew}" th:text="${player.name} + ' - ' + ${player.role}"></li>
 </ul>
 <a th:href="@{/spaceship/list}">Back to List</a>
 </body>

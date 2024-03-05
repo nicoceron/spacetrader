@@ -111,7 +111,7 @@ public class Initializer implements CommandLineRunner {
         String[] roles = {"Pilot", "Trader", "Captain"};
         for (int i = 0; i < playersCount; i++) {
             Player player = new Player();
-            player.setUser("Player" + i + 1);
+            player.setName("Player" + i + 1);
             player.setPassword("123");
             int randomRoleIndex = (int) (Math.random() * roles.length);
             player.setRole(roles[randomRoleIndex]);

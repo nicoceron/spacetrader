@@ -16,7 +16,7 @@
     </thead>
     <tbody>
     <tr th:each="player : ${availablePlayers}">
-        <td th:text="${player.user}"></td>
+        <td th:text="${player.name}"></td>
         <td><a th:href="@{/spaceship/assign-player/{spaceshipId}/to/{playerId}(spaceshipId=${spaceship.id}, playerId=${player.id})}">Assign</a></td>
     </tr>
     </tbody>

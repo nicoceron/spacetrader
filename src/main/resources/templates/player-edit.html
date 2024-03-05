@@ -2,15 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Edit Player</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<h1 th:text="${player.id} ? 'Edit Player' : 'Add New Player'"></h1>
+<h1 th:text="${player.id != null} ? 'Edit Player' : 'Add New Player'"></h1>
 <form th:action="@{/player/save}" th:object="${player}" method="post">
     <input type="hidden" th:field="*{id}">
     <div>
         <label for="name">Name</label>
         <input type="text" th:field="*{name}" id="name" required>
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" th:field="*{password}" id="password" required>
+    </div>
+    <div>
+        <label for="role">Role</label>
+        <select th:field="*{role}" id="role" required>
+            <option value="Pilot">Pilot</option>
+            <option value="Trader">Trader</option>
+            <option value="Captain">Captain</option>
+        </select>
     </div>
     <button type="submit">Save</button>
 </form>
