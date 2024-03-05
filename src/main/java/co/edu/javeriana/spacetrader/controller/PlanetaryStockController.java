@@ -32,10 +32,16 @@ public class PlanetaryStockController {
 
     @GetMapping("/edit-form/{id}")
     public String editPlanetaryStockForm(@PathVariable Long id, Model model) {
-        PlanetaryStock planetaryStock = planetaryStockService.findPlanetaryStockById(id);
+        PlanetaryStock planetaryStock;
+        if (id == 0) {
+            planetaryStock = new PlanetaryStock(); // Create a new PlanetaryStock object
+        } else {
+            planetaryStock = planetaryStockService.findPlanetaryStockById(id);
+        }
         model.addAttribute("planetaryStock", planetaryStock);
         return "planetary-stock-edit";
     }
+
 
     @PostMapping("/save")
     public String saveOrUpdatePlanetaryStock(@ModelAttribute PlanetaryStock planetaryStock) {

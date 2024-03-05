@@ -25,12 +25,12 @@
         <input type="text" th:field="*{z}" id="starZ">
         <span th:if="${#fields.hasErrors('z')}" th:errors="*{z}" th:class="${#fields.hasErrors('z')} ? 'error' : ''"></span>
 
-        <label for="inhabited">Inhabited: </label>
-        <select th:field="*{inhabited}" id="inhabited">
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-        </select>
-        <span th:if="${#fields.hasErrors('inhabited')}" th:errors="*{inhabited}" th:class="${#fields.hasErrors('inhabited')} ? 'error' : ''"></span>
+<!--        <label for="inhabited">Inhabited: </label>-->
+<!--        <select th:field="*{inhabited}" id="inhabited">-->
+<!--            <option value="true">Yes</option>-->
+<!--            <option value="false">No</option>-->
+<!--        </select>-->
+<!--        <span th:if="${#fields.hasErrors('inhabited')}" th:errors="*{inhabited}" th:class="${#fields.hasErrors('inhabited')} ? 'error' : ''"></span>-->
 
         <button type="submit">Save Changes</button>
     </form>

@@ -1,6 +1,7 @@
 package co.edu.javeriana.spacetrader.controller;
 
 import co.edu.javeriana.spacetrader.model.Spaceship;
+import co.edu.javeriana.spacetrader.model.Star;
 import co.edu.javeriana.spacetrader.service.SpaceshipService;
 import co.edu.javeriana.spacetrader.service.PlayerService; // Assuming PlayerService exists
 import jakarta.persistence.EntityNotFoundException;
@@ -36,7 +37,14 @@ public class SpaceshipController {
 
     @GetMapping("/edit-form/{id}")
     public String editSpaceshipForm(@PathVariable Long id, Model model) {
-        Spaceship spaceship = spaceshipService.findSpaceshipById(id);
+        Spaceship spaceship ;
+        Star star;
+        if (id == 0) {
+            // ID of 0 indicates a request to add a new Spaceship
+            spaceship = new Spaceship();
+        } else {
+            spaceship = spaceshipService.findSpaceshipById(id);
+        }
         model.addAttribute("spaceship", spaceship);
         return "spaceship-edit";
     }

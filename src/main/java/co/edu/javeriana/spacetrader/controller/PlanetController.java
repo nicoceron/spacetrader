@@ -37,7 +37,12 @@ public class PlanetController {
 
     @GetMapping("/edit-form/{id}")
     public String editPlanetForm(@PathVariable Long id, Model model) {
-        Planet planet = planetService.findPlanetById(id);
+        Planet planet;
+        if (id == 0) {
+            planet = new Planet(); // Create a new Planet object
+        } else {
+            planet = planetService.findPlanetById(id);
+        }
         model.addAttribute("planet", planet);
         return "planet-edit";
     }

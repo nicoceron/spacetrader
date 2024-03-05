@@ -35,11 +35,17 @@ public class ModelController {
     }
     //Editing Model
     @GetMapping("/edit-form/{id}")
-    public String editModelForm(ModelMap model, @PathVariable Long id){
-    Model modelEntity = modelService.findModelByID(id);
-    model.addAttribute("model", modelEntity);
-    return "model-edit";
+    public String editModelForm(ModelMap model, @PathVariable Long id) {
+        Model modelEntity;
+        if (id == 0) {
+            modelEntity = new Model(); // Create a new instance of Model
+        } else {
+            modelEntity = modelService.findModelByID(id);
+        }
+        model.addAttribute("model", modelEntity);
+        return "model-edit";
     }
+
 
     //Save or Update Model
     @PostMapping("/save")

@@ -32,7 +32,12 @@ public class ProductController {
 
     @GetMapping("/edit-form/{id}")
     public String editProductForm(@PathVariable Long id, Model model) {
-        Product product = productService.findProductById(id);
+        Product product;
+        if (id == 0) {
+            product = new Product(); // Create a new Product object
+        } else {
+            product = productService.findProductById(id);
+        }
         model.addAttribute("product", product);
         return "product-edit";
     }

@@ -32,10 +32,16 @@ public class PlayerController {
 
     @GetMapping("/edit-form/{id}")
     public String editPlayerForm(@PathVariable Long id, Model model) {
-        Player player = playerService.findPlayerById(id);
+        Player player;
+        if (id == 0) {
+            player = new Player(); // Create a new Player object
+        } else {
+            player = playerService.findPlayerById(id);
+        }
         model.addAttribute("player", player);
         return "player-edit";
     }
+
 
     @PostMapping("/save")
     public String saveOrUpdatePlayer(@ModelAttribute Player player) {

@@ -41,10 +41,18 @@ public class StarController {
 
     @GetMapping("/edit-form/{id}")
     public String editStarForm(@PathVariable Long id, Model model) {
-        Star star = starService.findStarById(id);
+        Star star;
+        if (id == 0) {
+            // ID of 0 indicates a request to add a new Star
+            star = new Star(); // Create a new Star object
+        } else {
+            // Attempt to find an existing Star by ID
+            star = starService.findStarById(id);
+        }
         model.addAttribute("star", star);
         return "star-edit";
     }
+
 
     @PostMapping("/save")
     public String saveOrUpdateStar(@ModelAttribute Star star) {
