@@ -11,7 +11,6 @@ public class PlanetaryStock {
     @ManyToOne
     @JoinColumn(name = "planet_id", nullable = false)
     private Planet planet;
-
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;

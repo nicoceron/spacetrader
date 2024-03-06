@@ -6,15 +6,34 @@
 </head>
 <body>
 <h1>Add Stock to <span th:text="${planet.name}"></span></h1>
-<form th:action="@{/planet/add-stock/{planetId}(planetId=${planet.id})}" method="post">
+<form th:action="@{/planet/add-stock/{planetId}(planetId=${planet.id})}" th:object="${newStock}" method="post">
+    <!-- The hidden input for the planet ID is not needed as it's already part of the URL path -->
+
     <div>
-        <label for="stockName">Stock Name</label>
-        <input type="text" id="stockName" name="name" required>
+        <label for="product">Product</label>
+        <select id="product" th:field="*{product}" required>
+            <option value="">Select a Product</option>
+            <option th:each="product : ${allProducts}"
+                    th:value="${product.id}"
+                    th:text="${product.name}">Product Name</option>
+        </select>
     </div>
+
     <div>
-        <label for="quantity">Quantity</label>
-        <input type="number" id="quantity" name="quantity" required>
+        <label for="stock">Stock</label>
+        <input type="number" th:field="*{stock}" id="stock" required>
     </div>
+
+    <div>
+        <label for="demandFactor">Demand Factor</label>
+        <input type="number" step="0.01" th:field="*{demandFactor}" id="demandFactor" required>
+    </div>
+
+    <div>
+        <label for="supplyFactor">Supply Factor</label>
+        <input type="number" step="0.01" th:field="*{supplyFactor}" id="supplyFactor" required>
+    </div>
+
     <button type="submit">Add Stock</button>
 </form>
 <a th:href="@{/planet/detail/{id}(id=${planet.id})}">Back to Planet Detail</a>

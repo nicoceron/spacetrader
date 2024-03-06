@@ -94,7 +94,7 @@ public class SpaceshipController {
             RedirectAttributes redirectAttributes) {
         spaceshipService.assignPlayerToSpaceship(playerId, spaceshipId);
         redirectAttributes.addAttribute("id", spaceshipId);
-        return "redirect:/spaceship/assign-player/{id}";
+        return "redirect:/spaceship/detail/{id}";
     }
 
 

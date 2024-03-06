@@ -2,8 +2,10 @@ package co.edu.javeriana.spacetrader.controller;
 
 import co.edu.javeriana.spacetrader.model.Planet;
 import co.edu.javeriana.spacetrader.model.PlanetaryStock;
+import co.edu.javeriana.spacetrader.model.Product;
 import co.edu.javeriana.spacetrader.service.PlanetService;
 import co.edu.javeriana.spacetrader.service.PlanetaryStockService;
+import co.edu.javeriana.spacetrader.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,9 @@ public class PlanetController {
 
     @Autowired
     private PlanetaryStockService planetaryStockService;
+
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/list")
     public String listPlanets(Model model) {
@@ -63,17 +68,29 @@ public class PlanetController {
         return "redirect:/planet/list";
     }
 
-    @GetMapping("/add-stock/{planetId}")
-    public String addPlanetaryStockForm(@PathVariable Long planetId, Model model) {
-        Planet planet = planetService.findPlanetById(planetId);
-        model.addAttribute("planet", planet);
-        return "planet-add-stock";
-    }
+    //ALREADY BEING ADDED IN PLANETARY-STOCK CONTROLLER
 
-    @PostMapping("/add-stock/{planetId}")
-    public String addPlanetaryStockToPlanet(@PathVariable Long planetId, @ModelAttribute PlanetaryStock planetaryStock) {
-        planetService.addPlanetaryStockToPlanet(planetId, planetaryStock);
-        return "redirect:/planet/detail/" + planetId;
-    }
-
+//    @GetMapping("/add-stock/{planetId}")
+//    public String addPlanetaryStockForm(@PathVariable Long planetId, Model model) {
+//        Planet planet = planetService.findPlanetById(planetId);
+//        List<Product> products = productService.findAllProducts();
+//
+//        PlanetaryStock newStock = new PlanetaryStock();
+//        newStock.setPlanet(planet);
+//
+//        model.addAttribute("planet", planet);
+//        model.addAttribute("newStock", newStock);
+//        model.addAttribute("allProducts", products);
+//
+//        return "planet-add-stock";
+//    }
+//
+//    @PostMapping("/add-stock/{planetId}")
+//    public String addPlanetaryStockToPlanet(
+//            @PathVariable Long planetId,
+//            @ModelAttribute PlanetaryStock planetaryStock) {
+//        planetService.addPlanetaryStockToPlanet(planetId, planetaryStock);
+//        return "redirect:/planet/detail/" + planetId;
+//    }
 }
+

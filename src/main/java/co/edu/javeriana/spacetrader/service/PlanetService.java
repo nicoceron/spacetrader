@@ -16,6 +16,7 @@ public class PlanetService {
 
     @Autowired
     private PlanetRepository planetRepository;
+    @Autowired
     private PlanetaryStockService planetaryStockService;
 
     // Retrieve all planets
@@ -56,19 +57,19 @@ public class PlanetService {
     }
 
 //    @jakarta.transaction.Transactional
-    @Transactional
-    public void addPlanetaryStockToPlanet(Long planetId, PlanetaryStock planetaryStock) {
-        Planet planet = findPlanetById(planetId);
-
-        //Set the planet of the planetaryStock
-        planetaryStock.setPlanet(planet);
-
-        // Add planetaryStock to the planet's list of stocks
-        planet.getProductsAvailable().add(planetaryStock);
-
-        // Save the planet
-        planetRepository.save(planet);
-        planetaryStockService.saveOrUpdatePlanetaryStock(planetaryStock);
-    }
+//    @Transactional
+//    public void addPlanetaryStockToPlanet(Long planetId, PlanetaryStock planetaryStock) {
+//        Planet planet = findPlanetById(planetId);
+//
+//        //Set the planet of the planetaryStock
+//        planetaryStock.setPlanet(planet);
+//
+//        // Add planetaryStock to the planet's list of stocks
+//        planet.getProductsAvailable().add(planetaryStock);
+//
+//        // Save the planet
+//        planetRepository.save(planet);
+//        planetaryStockService.saveOrUpdatePlanetaryStock(planetaryStock);
+//    }
 
 }

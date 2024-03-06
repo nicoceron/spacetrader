@@ -1,3 +1,4 @@
+<!-- planetary-stock-edit.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -8,18 +9,44 @@
 <h1 th:text="${planetaryStock.id} ? 'Edit Planetary Stock' : 'Add New Planetary Stock'"></h1>
 <form th:action="@{/planetary-stock/save}" th:object="${planetaryStock}" method="post">
     <input type="hidden" th:field="*{id}">
+
+    <div>
+        <label for="planet">Planet</label>
+        <select id="planet" th:field="*{planet}" required>
+            <option value="" th:unless="${allPlanets}">Select a Planet</option>
+            <option th:each="planet : ${allPlanets}"
+                    th:value="${planet.id}"
+                    th:text="${planet.name}"
+                    th:selected="${planet.id == planetaryStock.planet?.id}">Planet Name</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="product">Product</label>
+        <select id="product" th:field="*{product}" required>
+            <option value="" th:unless="${allProducts}">Select a Product</option>
+            <option th:each="product : ${allProducts}"
+                    th:value="${product.id}"
+                    th:text="${product.name}"
+                    th:selected="${product.id == planetaryStock.product?.id}">Product Name</option>
+        </select>
+    </div>
+
     <div>
         <label for="stock">Stock</label>
         <input type="number" th:field="*{stock}" id="stock" required>
     </div>
+
     <div>
         <label for="demandFactor">Demand Factor</label>
         <input type="number" step="0.01" th:field="*{demandFactor}" id="demandFactor" required>
     </div>
+
     <div>
         <label for="supplyFactor">Supply Factor</label>
         <input type="number" step="0.01" th:field="*{supplyFactor}" id="supplyFactor" required>
     </div>
+
     <button type="submit">Save</button>
 </form>
 <a th:href="@{/planetary-stock/list}">Cancel</a>

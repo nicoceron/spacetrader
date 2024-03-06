@@ -1,7 +1,11 @@
 package co.edu.javeriana.spacetrader.controller;
 
+import co.edu.javeriana.spacetrader.model.Planet;
 import co.edu.javeriana.spacetrader.model.PlanetaryStock;
+import co.edu.javeriana.spacetrader.model.Product;
+import co.edu.javeriana.spacetrader.service.PlanetService;
 import co.edu.javeriana.spacetrader.service.PlanetaryStockService;
+import co.edu.javeriana.spacetrader.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +19,12 @@ public class PlanetaryStockController {
 
     @Autowired
     private PlanetaryStockService planetaryStockService;
+
+    @Autowired
+    private PlanetService planetService;
+
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/list")
     public String listPlanetaryStocks(Model model) {
@@ -33,15 +43,21 @@ public class PlanetaryStockController {
     @GetMapping("/edit-form/{id}")
     public String editPlanetaryStockForm(@PathVariable Long id, Model model) {
         PlanetaryStock planetaryStock;
-        if (id == 0) {
-            planetaryStock = new PlanetaryStock(); // Create a new PlanetaryStock object
+        if (id == null || id == 0) {
+            planetaryStock = new PlanetaryStock();
         } else {
             planetaryStock = planetaryStockService.findPlanetaryStockById(id);
         }
+
+        List<Planet> planets = planetService.findAllPlanets();
+        List<Product> products = productService.findAllProducts();
+
         model.addAttribute("planetaryStock", planetaryStock);
+        model.addAttribute("allPlanets", planets);
+        model.addAttribute("allProducts", products);
+
         return "planetary-stock-edit";
     }
-
 
     @PostMapping("/save")
     public String saveOrUpdatePlanetaryStock(@ModelAttribute PlanetaryStock planetaryStock) {
