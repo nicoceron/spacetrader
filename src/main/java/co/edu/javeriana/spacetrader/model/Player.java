@@ -1,5 +1,6 @@
 package co.edu.javeriana.spacetrader.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -26,6 +27,7 @@ public class Player {
     private String role; // Roles: Pilot, Trader, Captain
 
     @ManyToMany(mappedBy = "crew")
+    @JsonIgnore
     private List<Spaceship> spaceships = new ArrayList<>();
 
     public Player() {
