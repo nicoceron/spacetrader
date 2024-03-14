@@ -6,6 +6,8 @@ import co.edu.javeriana.spacetrader.repository.PlayerRepository;
 import co.edu.javeriana.spacetrader.repository.SpaceshipRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +50,18 @@ public class PlayerService {
             spaceshipRepository.save(spaceship);
         }
         playerRepository.delete(player);
+    }
+
+    public Page<Player> listPlayersPageable(Pageable pageable){
+        return playerRepository.findAll(pageable);
+    }
+
+    public Page<Player> searchPlayer(String name, Pageable pageable){
+        return playerRepository.findAllByNameStartingWithIgnoreCase(name, pageable);
+    }
+
+    public int updateNamePlayer( Long id, String name){
+        return playerRepository.updatePlayerName(id, name);
     }
 
 }

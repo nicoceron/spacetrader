@@ -1,4 +1,4 @@
-package co.edu.javeriana.spacetrader.controller;
+package co.edu.javeriana.spacetrader.controller.webcontroller;
 
 import co.edu.javeriana.spacetrader.model.Planet;
 import co.edu.javeriana.spacetrader.model.PlanetaryStock;
