@@ -32,7 +32,7 @@ Before embarking on your space odyssey, make sure you're equipped with:
 
 1. Clone the repository to your local machine:
    
-   git clone https://github.com/your-username/space-trader.git
+   git clone https://github.com/nicoceron/space-trader.git
    
 2. Navigate into the project directory:
 
