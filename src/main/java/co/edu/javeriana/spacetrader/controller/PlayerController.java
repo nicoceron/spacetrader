@@ -3,56 +3,55 @@ package co.edu.javeriana.spacetrader.controller;
 import co.edu.javeriana.spacetrader.model.Player;
 import co.edu.javeriana.spacetrader.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-@Controller
-@RequestMapping("/player")
+@RestController
+@RequestMapping("/api/player")
 public class PlayerController {
-
     @Autowired
     private PlayerService playerService;
 
+//    Use json Ignore and separate requesting
     @GetMapping("/list")
-    public String listPlayers(Model model) {
-        List<Player> players = playerService.findAllPlayers();
-        model.addAttribute("players", players);
-        return "player-list";
+    public List<Player> listPlayers(){
+        return playerService.findAllPlayers();
     }
 
-    @GetMapping("/detail/{id}")
-    public String playerDetail(@PathVariable Long id, Model model) {
-        Player player = playerService.findPlayerById(id);
-        model.addAttribute("player", player);
-        return "player-detail";
+    @GetMapping("/{idPlayer}")
+    public Player findPlayer(@PathVariable Long idPlayer){
+        return playerService.findPlayerById(idPlayer);
     }
 
-    @GetMapping("/edit-form/{id}")
-    public String editPlayerForm(@PathVariable Long id, Model model) {
-        Player player;
-        if (id == 0) {
-            player = new Player(); // Create a new Player object
-        } else {
-            player = playerService.findPlayerById(id);
-        }
-        model.addAttribute("player", player);
-        return "player-edit";
+    @GetMapping("list-page")
+    public Page<Player> listPlayers(Pageable pageable){
+        return playerService.listPlayersPageable(pageable);
+    }
+    @GetMapping("/search")
+    public Page<Player> searchPlayer(@RequestParam String name, Pageable pageable){
+        return playerService.searchPlayer(name, pageable);
+    }
+    @PostMapping("")
+    public Player createPlayer(@RequestBody Player player){
+        return playerService.saveOrUpdatePlayer(player);
+    }
+    @DeleteMapping("/{idPlayer")
+    public void deletePlayer(@PathVariable Long idPlayer){
+        playerService.deletePlayer(idPlayer);
     }
 
-
-    @PostMapping("/save")
-    public String saveOrUpdatePlayer(@ModelAttribute Player player) {
-        playerService.saveOrUpdatePlayer(player);
-        return "redirect:/player/list";
+    @PatchMapping("{idPlayer}/name")
+    public Map<String, Object> modifyName(@PathVariable Long idPlayer, @RequestBody String newName){
+        int numberOfModifiedRegisters = playerService.updateNamePlayer(idPlayer, newName);
+        Map<String, Object> response = new HashMap<>();
+        response.put("quantityOfModifiedRows", numberOfModifiedRegisters);
+        return response;
     }
-
-    @GetMapping("/delete/{id}")
-    public String deletePlayer(@PathVariable Long id) {
-        playerService.deletePlayer(id);
-        return "redirect:/player/list";
-    }
-
 }
