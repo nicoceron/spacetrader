@@ -7,9 +7,11 @@ public class Wormhole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @ManyToOne
     @JoinColumn(name = "source_star_id", nullable = false)
     private Star sourceStar;
+
     @ManyToOne
     @JoinColumn(name = "destination_star_id", nullable = false)
     private Star destinationStar;
@@ -20,10 +22,18 @@ public class Wormhole {
     public Wormhole(Star sourceStar, Star destinationStar) {
         this.sourceStar = sourceStar;
         this.destinationStar = destinationStar;
+        this.travelTime = calculateDistance(sourceStar, destinationStar);
+
     }
 
     public Wormhole() {
 
+    }
+
+    private double calculateDistance(Star source, Star destination) {
+        return Math.sqrt(Math.pow(destination.getX() - source.getX(), 2) +
+                Math.pow(destination.getY() - source.getY(), 2) +
+                Math.pow(destination.getZ() - source.getZ(), 2));
     }
 
     public long getId() {

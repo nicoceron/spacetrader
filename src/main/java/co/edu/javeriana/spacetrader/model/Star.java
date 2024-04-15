@@ -17,7 +17,11 @@ public class Star {
     private double z;
     private boolean inhabited = false;
 
-    private Wormhole wormhole;
+    @OneToMany(mappedBy = "sourceStar")
+    private List<Wormhole> outgoingWormholes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "destinationStar")
+    private List<Wormhole> incomingWormholes = new ArrayList<>();
 
     @OneToMany(mappedBy = "star", cascade = CascadeType.PERSIST)
     private List<Planet> planets = new ArrayList<>();
@@ -101,13 +105,5 @@ public class Star {
     public void removePlanet(Planet planet) {
         planets.remove(planet);
         planet.setStar(null);
-    }
-
-    public Wormhole getWormhole() {
-        return wormhole;
-    }
-
-    public void setWormhole(Wormhole wormhole) {
-        this.wormhole = wormhole;
     }
 }
