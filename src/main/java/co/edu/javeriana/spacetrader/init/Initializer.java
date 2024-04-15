@@ -1,6 +1,7 @@
 package co.edu.javeriana.spacetrader.init;
 
 import co.edu.javeriana.spacetrader.model.*;
+import co.edu.javeriana.spacetrader.repository.PlanetaryStockRepository;
 import co.edu.javeriana.spacetrader.repository.StarRepository;
 import co.edu.javeriana.spacetrader.service.*;
 import jakarta.validation.ConstraintViolationException;
@@ -36,6 +37,9 @@ public class Initializer implements CommandLineRunner {
 
     @Autowired
     StarRepository starRepository;
+
+    @Autowired
+    PlanetaryStockService planetaryStockService;
 
     private Random random = new Random();
 
@@ -129,7 +133,33 @@ public class Initializer implements CommandLineRunner {
         }
     }
 
+    private void initializePlanetaryStocksForPlanets() {
+        Random random = new Random();
+        List<Planet> allPlanets = planetService.findAllPlanets();
+        List<Product> allProducts = productService.findAllProducts();
+        List<PlanetaryStock> planetaryStocks = new ArrayList<>();
 
+        for (Planet planet : allPlanets) {
+            int numberOfStocks = random.nextInt(10) + 1; // Generate 1 to 10 stock items per planet
+
+            for (int i = 0; i < numberOfStocks; i++) {
+                Product randomProduct = allProducts.get(random.nextInt(allProducts.size())); // Select a random product
+                PlanetaryStock stock = new PlanetaryStock();
+
+                stock.setPlanet(planet);
+                stock.setProduct(randomProduct);
+                stock.setStock(random.nextInt(1001)); // Random stock between 0 and 1000
+                stock.setDemandFactor(random.nextDouble() * 1000000); // Random demand factor between 0 and 1,000,000
+                stock.setSupplyFactor(random.nextDouble() * 1000000); // Random supply factor between 0 and 1,000,000
+
+                planetaryStocks.add(stock);
+            }
+        }
+
+        for (PlanetaryStock stock: planetaryStocks){
+            planetaryStockService.saveOrUpdatePlanetaryStock(stock);
+        }
+    }
 }
 
 

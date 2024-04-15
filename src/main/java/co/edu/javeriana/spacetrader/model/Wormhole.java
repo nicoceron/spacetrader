@@ -25,4 +25,36 @@ public class Wormhole {
     public Wormhole() {
 
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Star getSourceStar() {
+        return sourceStar;
+    }
+
+    public void setSourceStar(Star sourceStar) {
+        this.sourceStar = sourceStar;
+    }
+
+    public Star getDestinationStar() {
+        return destinationStar;
+    }
+
+    public void setDestinationStar(Star destinationStar) {
+        this.destinationStar = destinationStar;
+    }
+
+    public double getTravelTime() {
+        return travelTime;
+    }
+
+    public void setTravelTime(double travelTime) {
+        this.travelTime = travelTime;
+    }
 }
