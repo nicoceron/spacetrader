@@ -106,4 +106,20 @@ public class Star {
         planets.remove(planet);
         planet.setStar(null);
     }
+
+    public List<Wormhole> getOutgoingWormholes() {
+        return outgoingWormholes;
+    }
+
+    public void setOutgoingWormholes(List<Wormhole> outgoingWormholes) {
+        this.outgoingWormholes = outgoingWormholes;
+    }
+
+    public List<Wormhole> getIncomingWormholes() {
+        return incomingWormholes;
+    }
+
+    public void setIncomingWormholes(List<Wormhole> incomingWormholes) {
+        this.incomingWormholes = incomingWormholes;
+    }
 }

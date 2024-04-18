@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class TradingService {
+public class TradeService {
 
     @Autowired
     private PlanetaryStockRepository planetaryStockRepository;

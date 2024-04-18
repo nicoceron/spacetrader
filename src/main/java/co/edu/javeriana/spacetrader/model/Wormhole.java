@@ -23,7 +23,6 @@ public class Wormhole {
         this.sourceStar = sourceStar;
         this.destinationStar = destinationStar;
         this.travelTime = calculateDistance(sourceStar, destinationStar);
-
     }
 
     public Wormhole() {
