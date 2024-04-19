@@ -56,6 +56,7 @@ public class PlanetService {
         planetRepository.delete(planet);
     }
 
+
 //    @jakarta.transaction.Transactional
 //    @Transactional
 //    public void addPlanetaryStockToPlanet(Long planetId, PlanetaryStock planetaryStock) {

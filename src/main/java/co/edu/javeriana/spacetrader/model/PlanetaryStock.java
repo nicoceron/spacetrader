@@ -1,5 +1,6 @@
 package co.edu.javeriana.spacetrader.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,18 +9,30 @@ public class PlanetaryStock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "planet_id", nullable = false)
     private Planet planet;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     private long stock; // S
+
     private double demandFactor; // FD
+
     private double supplyFactor; // FO
 
-    public PlanetaryStock() {}
+    private double SellingPrice; // Calculated in the constructor
+
+    private double BuyingPrice; // Calculated in the constructor
+
+    public PlanetaryStock() {
+        this.SellingPrice = this.demandFactor / (1 + this.stock);
+        this.BuyingPrice = this.supplyFactor / (1 + this.stock);
+    }
 
     public Long getId() {
         return id;
@@ -68,6 +81,7 @@ public class PlanetaryStock {
     public void setSupplyFactor(double supplyFactor) {
         this.supplyFactor = supplyFactor;
     }
+
     public double getSellingPrice() {
         return demandFactor / (1 + stock);
     }

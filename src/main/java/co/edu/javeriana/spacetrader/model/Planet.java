@@ -1,5 +1,6 @@
 package co.edu.javeriana.spacetrader.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -15,10 +16,12 @@ public class Planet {
     @NotBlank(message = "This field is required, please provide a value.")
     String name;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "star_id", nullable = false)
     private Star star;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "planet", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<PlanetaryStock> productsAvailable = new ArrayList<>();
 

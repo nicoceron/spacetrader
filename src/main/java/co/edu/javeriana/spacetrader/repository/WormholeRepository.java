@@ -10,9 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface WormholeRepository extends JpaRepository<Wormhole, Long> {
-    // Find all wormholes with a given star as the source
-    List<Wormhole> findBySourceStar(Star sourceStar);
 
-    // Find a specific wormhole by its source and destination stars
-    Optional<Wormhole> findBySourceStarAndDestinationStar(Star sourceStar, Star destinationStar);
 }

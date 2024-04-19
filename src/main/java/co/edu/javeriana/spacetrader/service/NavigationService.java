@@ -1,5 +1,6 @@
 package co.edu.javeriana.spacetrader.service;
 
+import co.edu.javeriana.spacetrader.model.Planet;
 import co.edu.javeriana.spacetrader.model.Spaceship;
 import co.edu.javeriana.spacetrader.model.Star;
 import co.edu.javeriana.spacetrader.model.Wormhole;
@@ -22,6 +23,7 @@ public class NavigationService {
     // Assuming TravelService is the service that contains the findShortestPath method
     @Autowired
     private TravelService travelService;
+
 
     // Method to handle space travel to the selected star using shortest path
     public double travelToStar(Spaceship spaceship, Star destination) {
@@ -61,5 +63,18 @@ public class NavigationService {
             }
         }
         return null;
+    }
+
+    public void travelToPlanet(Spaceship spaceship, Planet destinationPlanet) {
+        Star currentStar = spaceship.getCurrentStar();
+
+        // Check if the spaceship is in the same star system as the destination planet
+        if (currentStar == null || !currentStar.equals(destinationPlanet.getStar())) {
+            throw new RuntimeException("Spaceship is not at the star of the destination planet.");
+        }
+
+        // Since travel within a star system is rapid, set the spaceship's current planet without a travel time
+        spaceship.setCurrentPlanet(destinationPlanet);
+        spaceshipRepository.save(spaceship);
     }
 }
