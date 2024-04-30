@@ -33,6 +33,14 @@ public class PlanetaryStock {
         this.BuyingPrice = this.supplyFactor / (1 + this.stock);
     }
 
+    public PlanetaryStock(Planet planet, Product product, Long stock, double demandFactor, double supplyFactor) {
+        this.planet = planet;
+        this.product = product;
+        this.stock = stock;
+        this.demandFactor = demandFactor;
+        this.supplyFactor = supplyFactor;
+    }
+
     public Long getId() {
         return id;
     }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Star {
@@ -109,6 +110,19 @@ public class Star {
     public void removePlanet(Planet planet) {
         planets.remove(planet);
         planet.setStar(null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Star star = (Star) o;
+        return Double.compare(x, star.x) == 0 && Double.compare(y, star.y) == 0 && Double.compare(z, star.z) == 0 && inhabited == star.inhabited && Objects.equals(id, star.id) && Objects.equals(name, star.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, x, y, z, inhabited);
     }
 
     public List<Wormhole> getOutgoingWormholes() {

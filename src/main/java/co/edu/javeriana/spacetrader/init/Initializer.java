@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+//@Profile({"default"})
 @Component
 public class Initializer implements CommandLineRunner {
 
@@ -191,10 +192,11 @@ public class Initializer implements CommandLineRunner {
             }
         }
 
-        for (PlanetaryStock stock: planetaryStocks){
+        for (PlanetaryStock stock : planetaryStocks) {
             planetaryStockService.saveOrUpdatePlanetaryStock(stock);
         }
     }
+
     public void initializeWormholes(List<Star> inhabitedStars) {
         if (inhabitedStars.size() < 2) {
             throw new IllegalStateException("Not enough inhabited stars to form a network");

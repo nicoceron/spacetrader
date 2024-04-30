@@ -5,6 +5,12 @@ public class TransactionRequest {
     private Long planetaryStockId;
     private int quantity;
 
+    public TransactionRequest(Long spaceshipId, Long planetaryStockId, int quantity) {
+        this.spaceshipId = spaceshipId;
+        this.planetaryStockId = planetaryStockId;
+        this.quantity = quantity;
+    }
+
     // Getters and Setters
     public Long getSpaceshipId() {
         return spaceshipId;

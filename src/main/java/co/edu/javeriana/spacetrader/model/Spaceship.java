@@ -48,7 +48,7 @@ public class Spaceship {
     public Spaceship() {
     }
 
-    public Spaceship(Long id, String name, Model model, BigDecimal credit, Star currentStar, Planet currentPlanet) {
+    public Spaceship(String name, Model model, BigDecimal credit, Star currentStar, Planet currentPlanet) {
         this.id = id;
         this.name = name;
         this.model = model;
