@@ -33,7 +33,7 @@ public class Player {
     public Player() {
     }
 
-    public Player(String name, String password, String role) {
+    public Player(String name, String password, String role, Role authRole) {
         this.name = name;
         this.password = password;
         this.role = role;

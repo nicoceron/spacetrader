@@ -1,14 +1,15 @@
 package co.edu.javeriana.spacetrader.init;
 
 import co.edu.javeriana.spacetrader.model.*;
-import co.edu.javeriana.spacetrader.repository.PlanetaryStockRepository;
-import co.edu.javeriana.spacetrader.repository.SpaceshipRepository;
-import co.edu.javeriana.spacetrader.repository.StarRepository;
-import co.edu.javeriana.spacetrader.repository.WormholeRepository;
+import co.edu.javeriana.spacetrader.repository.*;
 import co.edu.javeriana.spacetrader.service.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -18,9 +19,20 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-//@Profile({"default"})
+@Configuration
+// https://www.baeldung.com/spring-junit-prevent-runner-beans-testing-execution
+// https://www.baeldung.com/spring-profiles
+//Comment or not ?
+// mvn spring-boot:run -Dspring-boot.run.profiles=default
+@Profile({ "default" })
 @Component
 public class Initializer implements CommandLineRunner {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private StarService starService;
@@ -56,7 +68,12 @@ public class Initializer implements CommandLineRunner {
     private Random random = new Random();
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
+
+        userRepository.save(new User("Alice", "Alisson", "alice@alice.com", passwordEncoder.encode("alice123"), Role.ADMIN));
+        userRepository.save(new User("Bob", "Bobson", "bob@bob.com", passwordEncoder.encode("bob123"), Role.USER));
+
 
         List<Star> stars = generateStarsAndPlanets(40000);
         List<Star> inhabitedStars = stars.stream().filter(Star::isInhabited).collect(Collectors.toList());
