@@ -2,7 +2,9 @@ package co.edu.javeriana.spacetrader.init;
 
 import co.edu.javeriana.spacetrader.model.*;
 import co.edu.javeriana.spacetrader.repository.PlanetaryStockRepository;
+import co.edu.javeriana.spacetrader.repository.SpaceshipRepository;
 import co.edu.javeriana.spacetrader.repository.StarRepository;
+import co.edu.javeriana.spacetrader.repository.WormholeRepository;
 import co.edu.javeriana.spacetrader.service.*;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +12,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Component
 public class Initializer implements CommandLineRunner {
@@ -41,16 +45,28 @@ public class Initializer implements CommandLineRunner {
     @Autowired
     PlanetaryStockService planetaryStockService;
 
+    @Autowired
+    WormholeRepository wormholeRepository;
+
+    @Autowired
+    SpaceshipRepository spaceshipRepository;
+
+
     private Random random = new Random();
 
     @Override
     public void run(String... args) throws Exception {
-        generateStarsAndPlanets(40000);
+
+        List<Star> stars = generateStarsAndPlanets(40000);
+        List<Star> inhabitedStars = stars.stream().filter(Star::isInhabited).collect(Collectors.toList());
+        initializeWormholes(inhabitedStars);
         createSpaceshipModels();
-        List<Spaceship> spaceships = createAndSaveSpaceships(10);
+        List<Spaceship> spaceships = createAndSaveSpaceships(10, inhabitedStars);
         distributePlayersAmongSpaceships(100, spaceships);
         createProductSpecifications(500);
+        initializePlanetaryStocksForPlanets();
     }
+
 
     private void createSpaceshipModels() {
         List<Model> models = new ArrayList<>();
@@ -66,14 +82,13 @@ public class Initializer implements CommandLineRunner {
         models.forEach(modelService::saveOrUpdateModel);
     }
 
-    private void generateStarsAndPlanets(int count) {
-        Random random = new Random();
+    private List<Star> generateStarsAndPlanets(int count) {
         List<Star> stars = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             Star star = new Star("Star_" + i, random.nextDouble() * 1000, random.nextDouble() * 1000, random.nextDouble() * 1000, false);
-            if (random.nextDouble() <= 0.01) { // ~1% chance to have planets
-                int planetsCount = random.nextInt(3) + 1; // 1 to 3 planets
+            if (random.nextDouble() <= 0.01) {  // 1% chance to have planets
                 star.setInhabited(true);
+                int planetsCount = random.nextInt(3) + 1;  // 1 to 3 planets
                 for (int j = 0; j < planetsCount; j++) {
                     Planet planet = new Planet("Planet_" + i + "_" + j, star);
                     star.addPlanet(planet);
@@ -82,33 +97,53 @@ public class Initializer implements CommandLineRunner {
             stars.add(star);
         }
         starRepository.saveAll(stars);
+        return stars;  // Return the list of stars
     }
 
-    public List<Spaceship> createAndSaveSpaceships(int count) {
-        // Fetch all models from the database
+
+    public List<Spaceship> createAndSaveSpaceships(int count, List<Star> stars) {
         List<Model> allModels = modelService.findAllModels();
         if (allModels.isEmpty()) {
             throw new IllegalStateException("No models available to assign to spaceships.");
+        }
+
+        if (stars.stream().noneMatch(Star::isInhabited)) {
+            throw new IllegalStateException("No inhabited stars available for spaceship initialization.");
         }
 
         List<Spaceship> spaceships = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             Spaceship spaceship = new Spaceship();
             spaceship.setName("Spaceship " + (i + 1));
-            spaceship.setCredit(BigDecimal.valueOf(Math.random() * 10000));
-            // Assign a random model from the list
-            int randomModelIndex = (int) (Math.random() * allModels.size());
-            Model randomModel = allModels.get(randomModelIndex);
+            spaceship.setCredit(BigDecimal.valueOf(random.nextDouble() * 10000));
+
+            // Choose a random model
+            Model randomModel = allModels.get(random.nextInt(allModels.size()));
             spaceship.setModel(randomModel);
+
+            // Assign a random inhabited star
+            List<Star> inhabitedStars = stars.stream().filter(Star::isInhabited).collect(Collectors.toList());
+            Star randomStar = inhabitedStars.get(random.nextInt(inhabitedStars.size()));
+            spaceship.setCurrentStar(randomStar);
+
+            // Assign a random planet from the selected star
+            List<Planet> planets = randomStar.getPlanets();
+            if (!planets.isEmpty()) {
+                Planet randomPlanet = planets.get(random.nextInt(planets.size()));
+                spaceship.setCurrentPlanet(randomPlanet);
+            }
+
             try {
-                spaceship = spaceshipService.saveOrUpdateSpaceship(spaceship);
+                // Save the spaceship entity
+                spaceship = spaceshipRepository.save(spaceship);
                 spaceships.add(spaceship);
-            } catch (ConstraintViolationException e) {
-                System.err.println("Failed to save spaceship due to constraint violations: " + e.getMessage());
+            } catch (Exception e) {
+                System.err.println("Failed to save spaceship due to: " + e.getMessage());
             }
         }
         return spaceships;
     }
+
 
     public void distributePlayersAmongSpaceships(int playersCount, List<Spaceship> spaceships) {
         String[] roles = {"Pilot", "Trader", "Captain"};
@@ -160,6 +195,28 @@ public class Initializer implements CommandLineRunner {
             planetaryStockService.saveOrUpdatePlanetaryStock(stock);
         }
     }
+    public void initializeWormholes(List<Star> inhabitedStars) {
+        if (inhabitedStars.size() < 2) {
+            throw new IllegalStateException("Not enough inhabited stars to form a network");
+        }
+
+        Collections.shuffle(inhabitedStars); // Shuffle to randomize connections
+        // Create a simple loop to ensure all stars are connected at least in a ring
+        for (int i = 0; i < inhabitedStars.size(); i++) {
+            Star source = inhabitedStars.get(i);
+            Star destination = inhabitedStars.get((i + 1) % inhabitedStars.size()); // Loop back to the first
+            createAndSaveWormhole(source, destination);
+        }
+    }
+
+    private void createAndSaveWormhole(Star source, Star destination) {
+        Wormhole wormhole = new Wormhole(source, destination);
+        wormholeRepository.save(wormhole);
+    }
+
 }
+
+
+
 
 

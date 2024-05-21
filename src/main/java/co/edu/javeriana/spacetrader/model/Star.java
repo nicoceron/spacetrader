@@ -1,5 +1,6 @@
 package co.edu.javeriana.spacetrader.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,12 +18,15 @@ public class Star {
     private double z;
     private boolean inhabited = false;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "sourceStar")
     private List<Wormhole> outgoingWormholes = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "destinationStar")
     private List<Wormhole> incomingWormholes = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "star", cascade = CascadeType.PERSIST)
     private List<Planet> planets = new ArrayList<>();
 

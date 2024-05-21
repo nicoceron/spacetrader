@@ -1,4 +1,6 @@
 package co.edu.javeriana.spacetrader.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import jakarta.persistence.*;
 
@@ -8,10 +10,12 @@ public class Wormhole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "source_star_id", nullable = false)
     private Star sourceStar;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "destination_star_id", nullable = false)
     private Star destinationStar;

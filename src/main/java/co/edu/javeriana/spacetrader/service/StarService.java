@@ -7,7 +7,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StarService {
@@ -56,6 +58,21 @@ public class StarService {
         // Save all
         planetService.saveOrUpdatePlanet(planet);
         starRepository.save(star);
+    }
+
+    public List<Star> findClosestStars(Star currentStar, int limit) {
+        List<Star> allStars = starRepository.findAll();
+        return allStars.stream()
+                .filter(Star::isInhabited) // Filter to include only inhabited stars
+                .sorted(Comparator.comparingDouble(s -> calculateDistance(currentStar, s)))
+                .limit(limit)
+                .collect(Collectors.toList());
+    }
+
+    private double calculateDistance(Star star1, Star star2) {
+        return Math.sqrt(Math.pow(star2.getX() - star1.getX(), 2)
+                + Math.pow(star2.getY() - star1.getY(), 2)
+                + Math.pow(star2.getZ() - star1.getZ(), 2));
     }
 
 
