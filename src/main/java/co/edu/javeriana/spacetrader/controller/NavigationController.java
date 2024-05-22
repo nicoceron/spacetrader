@@ -66,6 +66,20 @@ public class NavigationController {
         }
     }
 
+    // Endpoint to show planets in the arrived star
+    @GetMapping("/planets/{starId}")
+    public ResponseEntity<?> getPlanetsInStar(@PathVariable Long starId) {
+        try {
+            Star star = starService.findStarById(starId);
+            List<Planet> planets = star.getPlanets();
+            return ResponseEntity.ok(planets);
+        } catch (EntityNotFoundException e) {
+            Map<String, Object> body = new HashMap<>();
+            body.put("error", "Star not found with id: " + starId);
+            // Convert the builder to ResponseEntity and set the body
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+        }
+    }
 
     // Endpoint to travel to the selected planet
     @PostMapping("/travel-to-planet/{spaceshipId}/{planetId}")
@@ -88,21 +102,4 @@ public class NavigationController {
             return ResponseEntity.badRequest().body(body);
         }
     }
-
-
-    // Endpoint to show planets in the arrived star
-    @GetMapping("/planets/{starId}")
-    public ResponseEntity<?> getPlanetsInStar(@PathVariable Long starId) {
-        try {
-            Star star = starService.findStarById(starId);
-            List<Planet> planets = star.getPlanets();
-            return ResponseEntity.ok(planets);
-        } catch (EntityNotFoundException e) {
-            Map<String, Object> body = new HashMap<>();
-            body.put("error", "Star not found with id: " + starId);
-            // Convert the builder to ResponseEntity and set the body
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
-        }
-    }
-
 }

@@ -9,7 +9,9 @@ import co.edu.javeriana.spacetrader.service.*;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+@Configuration
 @Component
 public class Initializer implements CommandLineRunner {
 
@@ -54,6 +57,7 @@ public class Initializer implements CommandLineRunner {
 
     private Random random = new Random();
 
+    @Transactional
     @Override
     public void run(String... args) throws Exception {
 
