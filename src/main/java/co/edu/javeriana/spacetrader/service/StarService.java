@@ -1,4 +1,5 @@
 package co.edu.javeriana.spacetrader.service;
+
 import co.edu.javeriana.spacetrader.model.Planet;
 import co.edu.javeriana.spacetrader.model.Star;
 import co.edu.javeriana.spacetrader.repository.StarRepository;
@@ -43,8 +44,7 @@ public class StarService {
 
     @Transactional
     public void addPlanetToStar(Long starId, Planet planet) {
-        Star star = starRepository.findById(starId)
-                .orElseThrow(() -> new EntityNotFoundException("Star not found with id: " + starId));
+        Star star = starRepository.findById(starId).orElseThrow(() -> new EntityNotFoundException("Star not found with id: " + starId));
 
         // Associate planet with star
         planet.setStar(star);
@@ -62,19 +62,14 @@ public class StarService {
 
     public List<Star> findClosestStars(Star currentStar, int limit) {
         List<Star> allStars = starRepository.findAll();
-        return allStars.stream()
-                .filter(Star::isInhabited) // Filter to include only inhabited stars
-                .sorted(Comparator.comparingDouble(s -> calculateDistance(currentStar, s)))
-                .limit(limit)
-                .collect(Collectors.toList());
+        allStars.forEach(star -> System.out.println("Star ID: " + star.getId() + ", Distance: " + calculateDistance(currentStar, star)));
+
+        return allStars.stream().filter(Star::isInhabited) // Filter to include only inhabited stars
+                .sorted(Comparator.comparingDouble(s -> calculateDistance(currentStar, s))).limit(limit).collect(Collectors.toList());
     }
+
 
     private double calculateDistance(Star star1, Star star2) {
-        return Math.sqrt(Math.pow(star2.getX() - star1.getX(), 2)
-                + Math.pow(star2.getY() - star1.getY(), 2)
-                + Math.pow(star2.getZ() - star1.getZ(), 2));
+        return Math.sqrt(Math.pow(star2.getX() - star1.getX(), 2) + Math.pow(star2.getY() - star1.getY(), 2) + Math.pow(star2.getZ() - star1.getZ(), 2));
     }
-
-
-
 }
