@@ -40,8 +40,7 @@ public class PlayerService {
     // Delete a player by ID
     @Transactional
     public void deletePlayer(Long id) {
-        Player player = playerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Player not found with id " + id));
+        Player player = playerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Player not found with id " + id));
 
         // Remove the player from each spaceship's crew list
         for (Spaceship spaceship : player.getSpaceships()) {
@@ -52,16 +51,28 @@ public class PlayerService {
         playerRepository.delete(player);
     }
 
-    public Page<Player> listPlayersPageable(Pageable pageable){
+    public Page<Player> listPlayersPageable(Pageable pageable) {
         return playerRepository.findAll(pageable);
     }
 
-    public Page<Player> searchPlayer(String name, Pageable pageable){
+    public Page<Player> searchPlayer(String name, Pageable pageable) {
         return playerRepository.findAllByNameStartingWithIgnoreCase(name, pageable);
     }
 
-    public int updateNamePlayer( Long id, String name){
+    public int updateNamePlayer(Long id, String name) {
         return playerRepository.updatePlayerName(id, name);
     }
 
+    @Transactional
+    public Player updatePlayer(Long idPlayer, Player playerDetails) {
+        Player player = playerRepository.findById(idPlayer).orElseThrow(() -> new EntityNotFoundException("Player not found with id " + idPlayer));
+
+        player.setName(playerDetails.getName());
+        player.setPassword(playerDetails.getPassword());
+        player.setRole(playerDetails.getRole());
+        player.setSpaceships(playerDetails.getSpaceships());
+
+        return playerRepository.save(player);
+    }
 }
+

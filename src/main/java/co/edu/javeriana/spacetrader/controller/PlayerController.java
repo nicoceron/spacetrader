@@ -18,40 +18,45 @@ public class PlayerController {
     private PlayerService playerService;
 
     @GetMapping("/list")
-    public List<Player> listPlayers(){
+    public List<Player> listPlayers() {
         return playerService.findAllPlayers();
     }
 
     @GetMapping("/{idPlayer}")
-    public Player findPlayer(@PathVariable Long idPlayer){
+    public Player findPlayer(@PathVariable Long idPlayer) {
         return playerService.findPlayerById(idPlayer);
     }
 
     @GetMapping("/list-page")
-    public Page<Player> listPlayers(Pageable pageable){
+    public Page<Player> listPlayers(Pageable pageable) {
         return playerService.listPlayersPageable(pageable);
     }
 
     @GetMapping("/search")
-    public Page<Player> searchPlayer(@RequestParam String name, Pageable pageable){
+    public Page<Player> searchPlayer(@RequestParam String name, Pageable pageable) {
         return playerService.searchPlayer(name, pageable);
     }
 
     @PostMapping("")
-    public Player createPlayer(@RequestBody Player player){
+    public Player createPlayer(@RequestBody Player player) {
         return playerService.saveOrUpdatePlayer(player);
     }
 
     @DeleteMapping("/{idPlayer}")
-    public void deletePlayer(@PathVariable Long idPlayer){
+    public void deletePlayer(@PathVariable Long idPlayer) {
         playerService.deletePlayer(idPlayer);
     }
 
     @PatchMapping("/{idPlayer}/name")
-    public Map<String, Object> modifyName(@PathVariable Long idPlayer, @RequestBody String newName){
+    public Map<String, Object> modifyName(@PathVariable Long idPlayer, @RequestBody String newName) {
         int numberOfModifiedRegisters = playerService.updateNamePlayer(idPlayer, newName);
         Map<String, Object> response = new HashMap<>();
         response.put("quantityOfModifiedRows", numberOfModifiedRegisters);
         return response;
+    }
+
+    @PutMapping("/{idPlayer}")
+    public Player updatePlayer(@PathVariable Long idPlayer, @RequestBody Player playerDetails) {
+        return playerService.updatePlayer(idPlayer, playerDetails);
     }
 }

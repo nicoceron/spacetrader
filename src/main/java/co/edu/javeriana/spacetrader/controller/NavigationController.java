@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,21 +49,32 @@ public class NavigationController {
     // Endpoint to handle the travel to the selected star and show travel time
     @PostMapping("/travel-to-star/{spaceshipId}/{starId}")
     public ResponseEntity<Map<String, Object>> travelToStar(@PathVariable Long spaceshipId, @PathVariable Long starId) {
+        Map<String, Object> body = new HashMap<>();
         try {
+            // Log the received IDs
+            System.out.println("Received spaceshipId: " + spaceshipId);
+            System.out.println("Received starId: " + starId);
+
             Spaceship spaceship = spaceshipService.findSpaceshipById(spaceshipId);
             Star destinationStar = starService.findStarById(starId);
+
+            // Log the retrieved objects
+            System.out.println("Found spaceship: " + spaceship);
+            System.out.println("Found destinationStar: " + destinationStar);
+
             double travelTime = navigationService.travelToStar(spaceship, destinationStar);
 
-            Map<String, Object> body = new HashMap<>();
             body.put("message", "Travel time: " + travelTime + " days");
             return ResponseEntity.ok(body);
 
         } catch (Exception e) {
-            Map<String, Object> body = new HashMap<>();
+            // Log the exception
+            e.printStackTrace();
             body.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(body);
         }
     }
+
 
     // Endpoint to show planets in the arrived star
     @GetMapping("/planets/{starId}")

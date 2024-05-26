@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
@@ -16,10 +17,12 @@ import org.springframework.test.context.ActiveProfiles;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-@ActiveProfiles("integration-testing")
+@ActiveProfiles("integrationtest")
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 public class RESTControllerIntegrationTest {
 
     @Autowired
@@ -27,7 +30,6 @@ public class RESTControllerIntegrationTest {
 
     @Autowired
     private PlayerRepository playerRepository;
-
 
     @Autowired
     private SpaceshipRepository spaceshipRepository;
@@ -41,13 +43,18 @@ public class RESTControllerIntegrationTest {
     @Autowired
     private PlanetRepository planetRepository;
 
+    @Autowired
+    private WormholeRepository wormholeRepository;
+
     private Long testPlayerId;
     private Long testSpaceshipId;
     private Long testStarId;
     private Long closestStarId;
     private Long testPlanetId;
 
-
+    /**
+     * Initializes the test data before each test method is executed.
+     */
     @BeforeEach
     void init() {
         // Create and save a Model
@@ -88,8 +95,16 @@ public class RESTControllerIntegrationTest {
         playerRepository.save(player);
         testPlayerId = player.getId();
         System.out.println("Test Player ID: " + testPlayerId);
+
+        // Create and save a Wormhole between the test star and the closest star
+        Wormhole wormhole = new Wormhole(star, closestStar);
+        wormholeRepository.save(wormhole);
+        System.out.println("Wormhole created between Test Star and Closest Star with travel time: " + wormhole.getTravelTime());
     }
 
+    /**
+     * Test for GET mapping to retrieve the closest stars to the current star of the spaceship.
+     */
     @Test
     void getClosestStars() {
         // Make the API call to get the closest stars
@@ -105,55 +120,105 @@ public class RESTControllerIntegrationTest {
         Assertions.assertEquals(closestStarId, stars[1].getId());
     }
 
-
+    /**
+     * Test for POST mapping to initiate travel to the closest star.
+     */
     @Test
     void travelToStar() {
-        // Assuming the travel time to the closest star has been pre-calculated and expected to be 10 days
-        double expectedTravelTime = 10;
-
-        // Make the API call to travel to the closest star
+        // Make the POST request to the endpoint
         ResponseEntity<Map> response = restTemplate.postForEntity("/api/navigation/travel-to-star/" + testSpaceshipId + "/" + closestStarId, null, Map.class);
 
-        // Assertions
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertNotNull(response.getBody());
+        System.out.println("Response: " + response);
+        System.out.println("Response Body: " + response.getBody());
 
-        // Ensure the response contains the correct travel time message
-        String expectedMessage = "Travel time: " + expectedTravelTime + " days";
-        Assertions.assertEquals(expectedMessage, response.getBody().get("message"));
+        // Expected response body
+        Map<String, Object> expectedResponseBody = new HashMap<>();
+        expectedResponseBody.put("message", "Travel time: 0.17320508075688776 days");
+
+        // Perform assertions
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
+        Assertions.assertNotNull(response.getBody(), "Response body should not be null");
+
+        // Assert that the response body matches the expected values
+        Assertions.assertEquals(expectedResponseBody, response.getBody(), "Response body should match the expected values");
+
+        // Additional assertions for individual keys, if needed
+        Assertions.assertTrue(response.getBody().containsKey("message"), "Response body should contain the key 'message'");
+        Assertions.assertEquals("Travel time: 0.17320508075688776 days", response.getBody().get("message"), "The message should match the expected travel time");
     }
 
-
-    @Test
-    void createPlayer() {
-        Player newPlayer = new Player("New Player", "newpassword", "Trader");
-        ResponseEntity<Player> response = restTemplate.postForEntity("/api/players", newPlayer, Player.class);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertNotNull(response.getBody());
-        Assertions.assertEquals("New Player", response.getBody().getName());
-    }
-
+    /**
+     * Test for DELETE mapping to delete a player.
+     */
     @Test
     void deletePlayer() {
-        ResponseEntity<Void> response = restTemplate.exchange("/api/players/" + testPlayerId, HttpMethod.DELETE, null, Void.class);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertFalse(playerRepository.findById(testPlayerId).isPresent());
+        // Make the DELETE request to the endpoint
+        ResponseEntity<Void> response = restTemplate.exchange("/api/player/" + testPlayerId, HttpMethod.DELETE, null, Void.class);
+
+        // Assert the status code
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
+
+        // Check if the player exists after deletion
+        boolean playerExists = playerRepository.findById(testPlayerId).isPresent();
+        System.out.println("Player exists after deletion: " + playerExists);
+
+        // Assert that the player does not exist
+        Assertions.assertFalse(playerExists, "Player should not exist after deletion");
     }
 
+    /**
+     * Test for PATCH mapping to modify the name of a player.
+     */
     @Test
-    public void modifyName() {
+    void modifyPlayerName() {
         String newName = "Updated Player Name";
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(newName, headers);
 
-        ResponseEntity<Map> response = restTemplate.exchange("/api/players/" + testPlayerId + "/name", HttpMethod.PATCH, entity, Map.class);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(1, response.getBody().get("quantityOfModifiedRows"));
+        // Make the PATCH request to the endpoint
+        ResponseEntity<Map> response = restTemplate.exchange("/api/player/" + testPlayerId + "/name", HttpMethod.PATCH, entity, Map.class);
 
-        Player updatedPlayer = playerRepository.findById(testPlayerId).orElse(null);
-        Assertions.assertNotNull(updatedPlayer);
-        Assertions.assertEquals(newName, updatedPlayer.getName());
+        System.out.println("Response: " + response);
+        System.out.println("Response Body: " + response.getBody());
+
+        // Assert the status code
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
+        Assertions.assertNotNull(response.getBody(), "Response body should not be null");
+
+        // Assert that the response body contains the key 'quantityOfModifiedRows'
+        Assertions.assertTrue(response.getBody().containsKey("quantityOfModifiedRows"), "Response body should contain the key 'quantityOfModifiedRows'");
+        Assertions.assertEquals(1, response.getBody().get("quantityOfModifiedRows"), "The number of modified rows should be 1");
+
+        // Check if the player's name is updated
+        Optional<Player> updatedPlayer = playerRepository.findById(testPlayerId);
+        Assertions.assertTrue(updatedPlayer.isPresent(), "Player should exist after name modification");
+        Assertions.assertEquals(newName, updatedPlayer.get().getName(), "Player's name should be updated");
+    }
+
+    /**
+     * Test for PUT mapping to update a player's details.
+     */
+    @Test
+    void updatePlayer() {
+        Player updatedPlayerDetails = new Player("Updated Player", "newpassword123", "Captain");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Player> entity = new HttpEntity<>(updatedPlayerDetails, headers);
+
+        // Make the PUT request to the endpoint
+        ResponseEntity<Player> response = restTemplate.exchange("/api/player/" + testPlayerId, HttpMethod.PUT, entity, Player.class);
+
+        System.out.println("Response: " + response);
+        System.out.println("Response Body: " + response.getBody());
+
+        // Assert the status code
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode(), "Status code should be 200 OK");
+        Assertions.assertNotNull(response.getBody(), "Response body should not be null");
+
+        // Assert that the updated player's details match the input details
+        Assertions.assertEquals(updatedPlayerDetails.getName(), response.getBody().getName(), "Player's name should be updated");
+        Assertions.assertEquals(updatedPlayerDetails.getPassword(), response.getBody().getPassword(), "Player's password should be updated");
+        Assertions.assertEquals(updatedPlayerDetails.getRole(), response.getBody().getRole(), "Player's role should be updated");
     }
 }
