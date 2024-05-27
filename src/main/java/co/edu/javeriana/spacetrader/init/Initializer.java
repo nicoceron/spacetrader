@@ -121,7 +121,7 @@ public class Initializer implements CommandLineRunner {
         for (int i = 0; i < count; i++) {
             Spaceship spaceship = new Spaceship();
             spaceship.setName("Spaceship " + (i + 1));
-            spaceship.setCredit(BigDecimal.valueOf(random.nextDouble() * 10000));
+            spaceship.setCredit(BigDecimal.valueOf(random.nextDouble() * 1000000));
 
             // Choose a random model
             Model randomModel = allModels.get(random.nextInt(allModels.size()));
