@@ -1,20 +1,22 @@
 package co.edu.javeriana.spacetrader.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
+@JsonIgnoreProperties({"planet"})
 public class PlanetaryStock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "planet_id", nullable = false)
     private Planet planet;
 
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;

@@ -1,39 +1,45 @@
 package co.edu.javeriana.spacetrader.controller;
 
-import co.edu.javeriana.spacetrader.model.TransactionRequest;
+import co.edu.javeriana.spacetrader.exception.InsufficientCreditsException;
 import co.edu.javeriana.spacetrader.model.PlanetaryStock;
+import co.edu.javeriana.spacetrader.model.TransactionRequest;
 import co.edu.javeriana.spacetrader.service.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/trade")
 public class TradeController {
 
+    private static final Logger logger = Logger.getLogger(TradeController.class.getName());
+
     @Autowired
     private TradeService tradeService;
 
-    // Endpoint to list planetary stock for a given planet
     @GetMapping("/planetary-stock/{planetId}")
     public ResponseEntity<?> listPlanetaryStock(@PathVariable Long planetId) {
         try {
             List<PlanetaryStock> stocks = tradeService.listPlanetaryStock(planetId);
             return ResponseEntity.ok(stocks);
         } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error listing planetary stock", e);
             Map<String, String> error = new HashMap<>();
             error.put("error", e.getMessage());
-            return ResponseEntity.badRequest().body(error); // This will return a JSON body with the error message
+            return ResponseEntity.badRequest().body(error);
         }
     }
 
-
-    // Endpoint to process a buy transaction
     @PostMapping("/buy")
+    @Transactional
     public ResponseEntity<?> buyProduct(@RequestBody TransactionRequest transaction) {
         try {
             tradeService.buyProduct(transaction.getSpaceshipId(), transaction.getPlanetaryStockId(), transaction.getQuantity());
@@ -47,8 +53,8 @@ public class TradeController {
         }
     }
 
-    // Endpoint to process a sell transaction
     @PostMapping("/sell")
+    @Transactional
     public ResponseEntity<?> sellProduct(@RequestBody TransactionRequest transaction) {
         try {
             tradeService.sellProduct(transaction.getSpaceshipId(), transaction.getPlanetaryStockId(), transaction.getQuantity());
@@ -61,4 +67,5 @@ public class TradeController {
             return ResponseEntity.badRequest().body(error);
         }
     }
+
 }
